@@ -17,13 +17,14 @@ const floatingIcons = [
 
 /* Roles for typewriter */
 const roles = [
-  "Software Engineer",
+  "DevOps Engineer",
+  "Cloud Engineer",
+  "Site Reliability Engineer",
+  "Researcher",
   "AWS Certified Cloud Practitioner",
-  "Cloud & DevOps Engineer",
-  "Multicloud Network Associate",
-  "Full Stack Developer",
-  "Mobile App Developer",
-  "AI/ML Researcher",
+  "AWS Student Builder Group Technical Lead",
+  "Kubernetes Enthusiast",
+  "Open Source Contributor",
 ];
 
 /* ===== Typewriter Hook ===== */
@@ -162,7 +163,7 @@ export const HeroSection = () => {
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4"
             >
-              Hi, I'm <span className="gradient-text">Eranga Kavishanka</span>
+              Hi, I'm <span className="gradient-text">Eranga Kavisanka</span>
             </motion.h1>
 
             {/* Role Typewriter */}
@@ -236,7 +237,7 @@ export const HeroSection = () => {
               className="mt-12 flex items-center justify-center lg:justify-start gap-10"
             >
               <div className="text-center">
-                <div className="text-4xl font-bold gradient-text">50+</div>
+                <div className="text-4xl font-bold gradient-text">20+</div>
                 <div className="text-sm text-muted-foreground mt-1">
                   Projects Completed
                 </div>

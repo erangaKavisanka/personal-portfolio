@@ -1,62 +1,89 @@
 import { motion } from "framer-motion";
 import { Briefcase, GraduationCap, Award } from "lucide-react";
 
+
 const experience = [
   {
-    company: "InventX Solutions",
-    role: "Co-Founder & Full Stack Developer",
-    duration: "2024 - Present",
+    company: "WSO2",
+    role: "Open Source Contributor",
+    duration: "2025 - Present",
     achievements: [
-      "Leading development of full-stack web and mobile applications for real-world clients",
-      "Implementing DevOps practices and cloud deployments for production systems",
+      "Contributed to open-source software projects and community initiatives",
+      "Worked with Git-based collaboration workflows and modern software development practices",
+      "Strengthened expertise in cloud-native technologies and software engineering",
     ],
   },
+
   {
-    company: "Peoples Bank",
-    role: "Banking Intern",
-    duration: "2021 - 2022",
+    company: "Independent Research Project",
+    role: "Researcher & Author",
+    duration: "2025 - 2026",
     achievements: [
-      "Gained hands-on experience in banking operations and customer service",
-      "Developed understanding of financial systems and processes",
+      "Published research paper at the Jayewardenepura Computing Symposium (JCoS) 2026",
+      "Conducted a comparative analysis of RF-based offline communication systems for traveller and hiker safety",
+      "Explored IoT integration approaches and opportunistic cloud synchronization techniques",
+    ],
+  },
+
+  {
+    company: "InventX Solutions",
+    role: "Co-Founder",
+    duration: "2024 - Present",
+    achievements: [
+      "Collaborating on software solutions and technical projects for real-world clients",
+      "Participating in cloud deployment, automation, and modern development practices",
+      "Managing project planning and technical decision-making activities",
     ],
   },
 ];
+
+
 
 const education = [
   {
-    degree: "BComp.(Hons.) in Software Engineering",
+    degree: "BComp (Hons.) in Software Engineering",
     university: "University of Sri Jayewardenepura",
     year: "2023 - Present",
-    highlights: ["Faculty of Computing"],
+    highlights: [
+      "Current GPA: 3.89",
+      "Dean's List",
+      "Faculty of Computing",
+    ],
   },
+
   {
-    degree: "Diploma of Education in English Language",
+    degree: "Diploma in English Language",
     university: "Yale College of English Academy",
     year: "2023",
-    highlights: ["Assured Diploma", "English Proficiency"],
+    highlights: [
+      "English Communication",
+      "Professional Writing",
+    ],
   },
+
   {
-    degree: "G.C.E. Advanced Level",
-    university: "Pinnawala Central College, Rambukkana",
+    degree: "G.C.E Advanced Level",
+    university: "Pinnawala Central College",
     year: "2022",
-    highlights: ["Results: BBB"],
-  },
-  {
-    degree: "G.C.E. Ordinary Level",
-    university: "Pinnawala Central College, Rambukkana",
-    year: "2019",
-    highlights: ["A - 8", "B - 1", "English Medium"],
+    highlights: [
+      "Physical Science Stream",
+      "BBB Results",
+    ],
   },
 ];
 
+
+
+
 const certifications = [
-  "AWS Certified Cloud Practitioner - Amazon Web Services",
-  "Multicloud Network Associate Badge - Aviatrix",
+  "AWS Certified Cloud Practitioner",
+  "Aviatrix Certified Multicloud Associate",
+  "AWS Solutions Architect Associate (Ongoing)",
+  "KCNA - Kubernetes and Cloud Native Associate (Ongoing)",
+  "Advanced DevOps Master Course - Imran Teli",
   "Full Stack Web Development - Skyrek",
-  "Flutter Certificate Course - Ceylon Edge",
-  "DevOps Master Program - Developers Stack",
-  "Linux for Absolute Beginners - KodeKloud",
 ];
+
 
 export const ResumeSection = () => {
   return (

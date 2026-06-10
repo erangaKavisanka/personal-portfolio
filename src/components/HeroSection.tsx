@@ -237,7 +237,7 @@ export const HeroSection = () => {
               className="mt-12 flex items-center justify-center lg:justify-start gap-10"
             >
               <div className="text-center">
-                <div className="text-4xl font-bold gradient-text">20+</div>
+                <div className="text-4xl font-bold gradient-text">30+</div>
                 <div className="text-sm text-muted-foreground mt-1">
                   Projects Completed
                 </div>

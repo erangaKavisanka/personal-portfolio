@@ -9,6 +9,7 @@ import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { SocialSidebar } from "@/components/SocialSidebar";
 import { VerifiedBadgesSection } from "@/components/VerifiedBadgesSection";
+import LearningJourneySection from "@/components/learningJourney";
 
 const Index = () => {
   return (
@@ -21,6 +22,7 @@ const Index = () => {
       <ResumeSection />
       <ProjectsSection />
       <SkillsSection />
+      <LearningJourneySection />
       <BlogsSection />
       <ContactSection />
       <Footer />

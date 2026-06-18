@@ -22,7 +22,6 @@ const roles = [
   "Site Reliability Engineer",
   "Researcher",
   "AWS Certified Cloud Practitioner",
-  "AWS Student Builder Group Technical Lead",
   "Kubernetes Enthusiast",
   "Open Source Contributor",
 ];

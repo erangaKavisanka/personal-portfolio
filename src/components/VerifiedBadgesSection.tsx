@@ -15,6 +15,12 @@ const badges = [
     image: "/badges/aviatrix.png",
     link: "https://www.credly.com/badges/31ee830f-590c-4adf-ac08-9859363396b1/public_url",
   },
+  {
+  title: "Technical Lead - AWS Student Builder Group - USJ",
+  issuer: "Amazon Web Services",
+  image: "/badges/aws-2.png",
+  link: "https://lnkd.in/gSPzzjNu",
+}
 ];
 
 export const VerifiedBadgesSection = () => {

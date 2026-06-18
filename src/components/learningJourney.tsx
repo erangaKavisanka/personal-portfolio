@@ -11,34 +11,46 @@ const certifications = [
 ];
 
 const linuxBadges = [
-{
-title: "Linux",
-image: "/badges/lfs101.png",
-},
-{
-title: "Kubernetes",
-image: "/badges/lfs158.png",
-},
-{
-title: "DevOps & SRE",
-image: "/badges/lfs162.png",
-},
-{
-title: "GitOps",
-image: "/badges/lfs169.png",
-},
-{
-title: "Jenkins",
-image: "/badges/lfs167.png",
-},
-{
-title: "Istio",
-image: "/badges/lfs144.png",
-},
-{
-title: "Serverless",
-image: "/badges/lfs157.png",
-},
+  {
+    title: "Linux",
+    code: "LFS101",
+    image: "/badges/lfs101.png",
+  },
+  {
+    title: "Kubernetes",
+    code: "LFS158",
+    image: "/badges/lfs158.png",
+  },
+  {
+    title: "DevOps & SRE",
+    code: "LFS162",
+    image: "/badges/lfs162.png",
+  },
+  {
+    title: "GitOps",
+    code: "LFS169",
+    image: "/badges/lfs169.png",
+  },
+  {
+    title: "Jenkins",
+    code: "LFS167",
+    image: "/badges/lfs167.png",
+  },
+  {
+    title: "DevSecOps",
+    code: "LFS180",
+    image: "/badges/lfs180.png",
+  },
+  {
+    title: "Istio",
+    code: "LFS144",
+    image: "/badges/lfs144.png",
+  },
+  {
+    title: "Serverless",
+    code: "LFS157",
+    image: "/badges/lfs157.png",
+  },
 ];
 
 export default function LearningJourneySection() {
@@ -124,25 +136,29 @@ return ( <section
           </h3>
         </div>
 
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
-          {linuxBadges.map((badge, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.08 }}
-              className="flex flex-col items-center"
-            >
-              <img
-                src={badge.image}
-                alt={badge.title}
-                className="w-16 h-16 object-contain"
-              />
+   <div className="grid grid-cols-4 gap-6">
+  {linuxBadges.map((badge, index) => (
+    <motion.div
+      key={index}
+      whileHover={{ scale: 1.08 }}
+      className="flex flex-col items-center text-center"
+    >
+      <img
+        src={badge.image}
+        alt={badge.title}
+        className="w-24 h-24 object-contain"
+      />
 
-              <p className="text-xs text-center mt-2 text-muted-foreground">
-                {badge.title}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+      <p className="mt-3 font-medium">
+        {badge.title}
+      </p>
+
+      <p className="text-xs text-primary font-semibold">
+        {badge.code}
+      </p>
+    </motion.div>
+  ))}
+</div>
       </motion.div>
     </div>
   </div>

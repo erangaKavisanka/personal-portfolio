@@ -35,14 +35,7 @@ const projects = [
     liveUrl: "https://www.sekinexpress.com/",
     githubUrl: "https://github.com/Eranga035225/webSystem-for-a-delivery-service.git",
   },
-  {
-    title: "Exclusive – Secure E-Commerce",
-    description:
-      "Secure e-commerce web application with Stripe payments, product reviews, order management, and admin panel. Tested using SAST, DAST security techniques.",
-    image: projectExclusive,
-    tags: ["Laravel", "PHP", "Stripe", "MySQL", "Security Testing"],
-    githubUrl: "https://github.com/Eranga035225/Secured-Ecommerce-system.git",
-  },
+ 
   {
     title: "MediLink – E-Channeling System",
     description:
@@ -79,15 +72,7 @@ const projects = [
     liveUrl: "#",
     githubUrl: "#",
   },
-  {
-    title: "Animal Classification (CNN)",
-    description:
-      "Animal classification system using Convolutional Neural Networks to identify and classify different animals from images.",
-    image: projectAnimalClassification,
-    tags: ["Python", "Deep Learning", "CNN", "TensorFlow/Keras"],
-    liveUrl: "#",
-    githubUrl: "#",
-  },
+ 
   {
     title: "Skill Finder – Mobile App",
     description:
@@ -97,24 +82,8 @@ const projects = [
     liveUrl: "#",
     githubUrl: "#",
   },
-  {
-    title: "Travel Tales – Mobile App",
-    description:
-      "Mobile travel application allowing users to search and explore travel destinations with detailed location information and clean UI.",
-    image: projectTravelTales,
-    tags: ["Flutter", "Dart", "Firebase", "Mobile UI/UX"],
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    title: "Weather App – Mobile",
-    description:
-      "Mobile weather application providing real-time weather information with current conditions through a clean and user-friendly interface.",
-    image: projectWeatherApp,
-    tags: ["Flutter", "Dart", "REST APIs", "Mobile UI"],
-    liveUrl: "#",
-    githubUrl: "#",
-  },
+
+
   {
     title: "AWS CI/CD Pipeline",
     description:
@@ -124,24 +93,7 @@ const projects = [
     liveUrl: "#",
     githubUrl: "#",
   },
-  {
-    title: "Docker-based CI/CD Pipeline",
-    description:
-      "Docker-based CI/CD pipeline to containerize applications and automate build, test, and deployment stages with GitHub Actions.",
-    image: projectDockerCicd,
-    tags: ["Docker", "GitHub Actions", "CI/CD", "Containerization"],
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    title: "Node.js Backend on AWS",
-    description:
-      "Containerized Node.js backend deployed on AWS using Docker, ECR, and EC2 with secure environment configuration and MongoDB integration.",
-    image: projectNodejsAws,
-    tags: ["Node.js", "Docker", "AWS EC2", "AWS ECR", "MongoDB"],
-    liveUrl: "#",
-    githubUrl: "#",
-  },
+
 ];
 
 export const ProjectsSection = () => {

@@ -3,98 +3,96 @@
 import { motion } from "framer-motion";
 
 const activities = [
-  {
-    title: "Technical Lead",
-    organization: "AWS Student Builder Group - USJ",
-    period: "2026 - Present",
-    image: "/community/aws-lead.jpg",
-    description:
-      "Leading cloud and DevOps initiatives, workshops, and mentoring activities.",
-    tags: ["AWS", "Cloud", "Leadership"],
-  },
+{
+title: "Technical Lead",
+organization: "AWS Student Builder Group - USJ",
+period: "2026 - Present",
+image: "/badges/community/aws.png",
+description:
+"Leading cloud and DevOps initiatives, workshops, and mentoring activities.",
+tags: ["AWS", "Cloud", "Leadership"],
+},
 
-  {
-    title: "Head of Teaching Panel",
-    organization: "FusionX 1.0 AI Bootcamp",
-    period: "2025",
-    image: "/community/fusionx.jpg",
-    description:
-      "Led technical training sessions and coordinated AI learning activities.",
-    tags: ["AI", "Teaching", "Mentoring"],
-  },
+{
+title: "Open Source Contributor",
+organization: "WSO2",
+period: "2026",
+image: "badges/community/wso2.webp",
+description:
+"Contributed to open-source projects and collaborated with the developer community.",
+tags: ["Open Source", "GitHub"],
+},
 
-  {
-    title: "Batch Representative",
-    organization: "University of Sri Jayewardenepura",
-    period: "2025 - 2026",
-    image: "/community/batch-rep.jpg",
-    description:
-      "Represented students, coordinated academic matters, and acted as a communication bridge between students and faculty.",
-    tags: ["Leadership", "Communication"],
-  },
+{
+title: "Blogger",
+organization: "Medium",
+period: "2026 - Present",
+image: "badges/community/medium.jpg",
+description:
+"Writing technical articles on Cloud Computing, DevOps and Software Engineering.",
+tags: ["Writing", "Tech Blogging"],
+},
 
-  {
-    title: "Media Team Member",
-    organization: "IEEE Student Branch - USJ",
-    period: "2023 - 2024",
-    image: "/community/ieee-media.jpg",
-    description:
-      "Created promotional content and supported social media and event marketing activities.",
-    tags: ["IEEE", "Media", "Marketing"],
-  },
+{
+title: "Founder & Author",
+organization: "Kubernetes Hidden Gems",
+period: "2026 - Present",
+image: "badges/community/khg.png",
+description:
+"Created and manage a growing LinkedIn newsletter focused on Kubernetes, Cloud Native technologies.",
+tags: ["Newsletter", "Kubernetes", "Cloud Native"],
+},
 
-  {
-    title: "Program Team Member",
-    organization: "IEEEXtreme",
-    period: "2023 - 2024",
-    image: "/community/ieeextreme.jpg",
-    description:
-      "Contributed to organizing and coordinating competitive programming events and student activities.",
-    tags: ["Events", "Leadership"],
-  },
+{
+title: "Head of Teaching Panel",
+organization: "FusionX 1.0 AI Bootcamp in collaboration with Sri Lanka Association for Artificial Intelligence (SLAAI)",
+period: "2025",
+image: "/badges/community/fusionx.jpg",
+description:
+"Led technical training sessions and coordinated AI learning activities.",
+tags: ["AI", "Teaching", "Mentoring"],
+},
 
-  {
-    title: "Open Source Contributor",
-    organization: "WSO2",
-    period: "2025",
-    image: "/community/wso2.jpg",
-    description:
-      "Contributed to open-source projects and collaborated with the developer community.",
-    tags: ["Open Source", "GitHub"],
-  },
+{
+title: "Batch Representative",
+organization: "University of Sri Jayewardenepura",
+period: "2025-Present",
+image: "/badges/community/jpura.png",
+description:
+"Represented students and acted as a communication bridge between students and faculty.",
+tags: ["Leadership", "Communication"],
+},
 
-  {
-    title: "Blogger",
-    organization: "Medium",
-    period: "2026 - Present",
-    image: "/community/blogger.jpg",
-    description:
-      "Writing technical articles on Cloud Computing, DevOps, Software Engineering, and emerging technologies.",
-    tags: ["Writing", "Tech Blogging"],
-  },
+{
+title: "Media Team Member",
+organization: "IEEE Student Branch - USJ",
+period: "2023 - 2024",
+image: "badges/community/ieee1.jpg",
+description:
+"Created promotional content and supported social media and event marketing activities.",
+tags: ["IEEE", "Media", "Marketing"],
+},
 
-  {
-    title: "Banking Intern",
-    organization: "People's Bank",
-    period: "2022 - 2023",
-    image: "/community/peoples-bank.jpg",
-    description:
-      "Gained practical experience in customer service, operations, documentation, and professional workplace practices.",
-    tags: ["Internship", "Professional Experience"],
-  },
+{
+title: "Program Team Member",
+organization: "IEEEXtreme",
+period: "2023 - 2024",
+image: "badges/community/ieee2.jpg",
+description:
+"Contributed to organizing and coordinating competitive programming events.",
+tags: ["Events", "Leadership"],
+},
 
-  {
-    title: "Dean's List Scholar",
-    organization: "University of Sri Jayewardenepura",
-    period: "2025",
-    image: "/community/deans-list.jpg",
-    description:
-      "Recognized for academic excellence and outstanding GPA performance.",
-    tags: ["Academic", "Achievement"],
-  },
+{
+title: "Vice President",
+organization: "Students' Union - Faculty of Computing, University of Sri Jayewardenepura",
+period: "2023-2025",
+image: "badges/community/jpura.png",
+description:
+"Representing students, coordinating faculty-level initiatives, supporting student welfare activities, and contributing to leadership and decision-making processes within the Faculty of Computing.",
+tags: ["Leadership", "Student Affairs", "Management"],
+},
 ];
-
-
 
 
 export default function LeadershipSection() {
@@ -105,6 +103,7 @@ return ( <section
 
 ```
   <div className="container mx-auto px-4 relative z-10">
+    {/* Header */}
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -122,55 +121,58 @@ return ( <section
       </h2>
 
       <p className="text-muted-foreground max-w-2xl mx-auto">
-        Technical leadership, volunteering, mentoring, open-source
+        Leadership, volunteering, mentoring, content creation, open-source
         contributions, and community engagement throughout my journey.
       </p>
     </motion.div>
 
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {/* Cards */}
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {activities.map((activity, index) => (
         <motion.div
           key={activity.title}
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: index * 0.1 }}
-          whileHover={{ y: -10 }}
-          className="bg-card/30 backdrop-blur-sm border border-border rounded-2xl overflow-hidden hover:border-primary/40 transition-all"
+          transition={{ delay: index * 0.08 }}
+          whileHover={{ y: -8 }}
+          className="bg-card/30 backdrop-blur-sm border border-border rounded-2xl p-6 hover:border-primary/40 transition-all duration-300"
         >
-          <img
-            src={activity.image}
-            alt={activity.title}
-            className="w-full h-56 object-cover"
-          />
+          <div className="flex gap-4 mb-4">
+            <img
+              src={activity.image}
+              alt={activity.title}
+              className="w-16 h-16 rounded-xl object-cover border border-primary/20"
+            />
 
-          <div className="p-6">
-            <span className="text-primary text-sm font-medium">
-              {activity.period}
-            </span>
+            <div>
+              <p className="text-primary text-sm font-medium">
+                {activity.period}
+              </p>
 
-            <h3 className="text-xl font-bold mt-2">
-              {activity.title}
-            </h3>
+              <h3 className="text-lg font-bold">
+                {activity.title}
+              </h3>
 
-            <p className="text-muted-foreground text-sm mt-1 mb-3">
-              {activity.organization}
-            </p>
-
-            <p className="text-sm text-muted-foreground mb-4">
-              {activity.description}
-            </p>
-
-            <div className="flex flex-wrap gap-2">
-              {activity.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
+              <p className="text-sm text-muted-foreground">
+                {activity.organization}
+              </p>
             </div>
+          </div>
+
+          <p className="text-sm text-muted-foreground mb-4">
+            {activity.description}
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {activity.tags.map((tag) => (
+              <span
+                key={tag}
+                className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         </motion.div>
       ))}

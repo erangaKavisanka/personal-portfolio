@@ -19,6 +19,10 @@ provider: "Imran Teli",
 title: "Advanced DevOps Course",
 provider: "Developers Stack",
 },
+{
+title: "Linux For Absolute Beginners",
+provider: "KodeKloud",
+},
 ];
 
 const linuxBadges = [

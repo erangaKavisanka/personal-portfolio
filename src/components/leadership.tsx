@@ -37,7 +37,7 @@ tags: ["Writing", "Tech Blogging"],
 title: "Founder & Author",
 organization: "Kubernetes Hidden Gems",
 period: "2026 - Present",
-image: "badges/community/khg.png",
+image: "badges/community/khg2.png",
 description:
 "Created and manage a growing LinkedIn newsletter focused on Kubernetes, Cloud Native technologies.",
 tags: ["Newsletter", "Kubernetes", "Cloud Native"],

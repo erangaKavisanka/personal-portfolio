@@ -7,32 +7,39 @@ import blog3 from "@/assets/blog-3.jpg";
 
 const blogs = [
   {
-    title: "Building Scalable Microservices with Node.js",
+    title: "Inter-Pod Affinity & Anti-Affinity",
     description:
-      "Learn how to design and implement microservices architecture that can handle millions of requests.",
-    image: blog1,
-    date: "Jan 15, 2026",
-    tags: ["Architecture", "Node.js"],
-    readTime: "8 min read",
-  },
-  {
-    title: "DevOps Best Practices for 2026",
-    description:
-      "A comprehensive guide to modern DevOps practices, from CI/CD pipelines to infrastructure as code.",
-    image: blog2,
-    date: "Jan 10, 2026",
-    tags: ["DevOps", "Cloud"],
-    readTime: "12 min read",
-  },
-  {
-    title: "AI-Powered Development Workflows",
-    description:
-      "How artificial intelligence is transforming the way we write, test, and deploy code.",
-    image: blog3,
-    date: "Jan 5, 2026",
-    tags: ["AI", "Productivity"],
+      "Learn how Kubernetes intelligently places workloads to improve performance, availability, and resilience using Pod Affinity and Anti-Affinity rules.",
+    image: "affinity.png",
+    date: "June 2026",
     readTime: "6 min read",
+    tags: ["Kubernetes", "Scheduling", "Cloud Native"],
+    episode: "Episode #4",
+    link: "https://www.linkedin.com/posts/eranga-kavisanka-7249592a8_kubernetes-k8s-devops-ugcPost-7475145781620928512-PF07/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEouAcwBLFoJr-teZm0z89rST1LN-ILosYk",
   },
+  {
+  title: "Kubernetes Annotations",
+  description:
+    "Learn how Kubernetes Annotations store rich metadata that enables tooling, automation, monitoring, and integrations without affecting object selection.",
+  image: "Annotations.png", // Replace with your Annotations article image
+  date: "June 2026",
+  readTime: "6 min read",
+  tags: ["Kubernetes", "Annotations", "Cloud Native"],
+  episode: "Episode #2",
+  link: "https://www.linkedin.com/pulse/kubernetes-hidden-gems-3-annotations-eranga-kavisanka-h8g7c",
+},
+  {
+    title: "Kubernetes Probes",
+    description:
+      "Understand Liveness, Readiness, and Startup Probes and how they help build highly available Kubernetes applications.",
+    date: "June 2026",
+    image: "probes.png", // Replace with your Probes article image
+    readTime: "5 min read",
+    tags: ["Kubernetes", "Probes", "Reliability"],
+    episode: "Episode #3",
+    link: "https://www.linkedin.com/pulse/kubernetes-hidden-gems-2-startup-probes-eranga-kavisanka-dzauc",
+  },
+
 ];
 
 export const BlogsSection = () => {
@@ -75,19 +82,21 @@ export const BlogsSection = () => {
             >
               <div className="relative bg-card/50 backdrop-blur-sm border border-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10">
                 {/* Image */}
-                <div className="relative overflow-hidden aspect-video">
-                  <img
-                    src={blog.image}
-                    alt={blog.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-                  
-                  {/* Read Time Badge */}
-                  <div className="absolute top-4 right-4 px-3 py-1 bg-background/80 backdrop-blur-sm rounded-full text-xs font-medium">
-                    {blog.readTime}
-                  </div>
-                </div>
+        <div className="relative bg-[#080b17] p-4">
+  <div className="overflow-hidden rounded-xl border border-primary/20">
+    <img
+      src={blog.image}
+      alt={blog.title}
+      className="w-full object-contain transition duration-500 group-hover:scale-105"
+    />
+  </div>
+
+ 
+
+  <div className="absolute top-7 right-7 px-3 py-1 rounded-full bg-background/80 backdrop-blur-sm text-xs">
+    {blog.readTime}
+  </div>
+</div>
 
                 {/* Content */}
                 <div className="p-6">
@@ -120,10 +129,15 @@ export const BlogsSection = () => {
                   </div>
 
                   {/* Read More */}
-                  <button className="flex items-center gap-2 text-sm font-medium text-primary hover:gap-3 transition-all">
-                    Read Article
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+                 <a
+  href={blog.link}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center gap-2 text-sm font-medium text-primary hover:gap-3 transition-all"
+>
+  Read Article
+  <ArrowRight className="w-4 h-4" />
+</a>
                 </div>
               </div>
             </motion.article>
@@ -138,9 +152,15 @@ export const BlogsSection = () => {
           transition={{ delay: 0.4 }}
           className="text-center mt-12"
         >
-          <Button variant="heroOutline" size="lg">
-            View All Articles
-          </Button>
+         <a
+  href="https://www.linkedin.com/newsletters/%E2%98%B8%EF%B8%8F-kubernetes-hidden-gems-7463101252302692352"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <Button variant="heroOutline" size="lg">
+    View All Articles
+  </Button>
+</a>
         </motion.div>
       </div>
     </section>

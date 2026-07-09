@@ -5,7 +5,7 @@ import { Award, BookOpen, GraduationCap } from "lucide-react";
 const certifications = [
 "AWS Certified Cloud Practitioner",
 "Aviatrix Certified Multicloud Associate",
-"KCNA - Kubernetes and Cloud Native Associate (Ongoing)",
+"KCNA - Kubernetes and Cloud Native Associate",
 "AWS Solutions Architect Associate (Ongoing)",
 ];
 

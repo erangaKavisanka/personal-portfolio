@@ -542,8 +542,73 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
 // ----------------------------------------
 // Component: YouTubePlayer
 // ----------------------------------------
-const YouTubePlayer = ({ url }: { url: string }) => {
+const YouTubePlayer = ({ url, thumbnail }: { url: string, thumbnail?: string }) => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const embedUrl = getYoutubeEmbedUrl(url);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  if (isMobile) {
+    return (
+      <>
+        <div 
+          className="relative w-full h-full bg-muted/20 flex items-center justify-center cursor-pointer group"
+          style={{ pointerEvents: 'auto' }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setShowModal(true);
+          }}
+        >
+          {thumbnail ? (
+            <img src={thumbnail} alt="Video thumbnail" className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-50 transition-opacity" />
+          ) : (
+            <div className="absolute inset-0 bg-black/80" />
+          )}
+          <div className="relative z-10 w-16 h-16 rounded-full bg-primary/90 text-primary-foreground flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+            <Play className="w-8 h-8 ml-1" />
+          </div>
+        </div>
+
+        {typeof document !== "undefined" && createPortal(
+          <AnimatePresence>
+            {showModal && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100000] bg-black flex flex-col"
+              >
+                <div className="flex justify-end p-4">
+                  <Button variant="ghost" size="icon" className="rounded-full text-white/70 hover:text-white hover:bg-white/20" onClick={() => setShowModal(false)}>
+                    <X className="w-8 h-8" />
+                  </Button>
+                </div>
+                <div className="flex-1 w-full flex items-center justify-center p-4 pb-12 relative" style={{ pointerEvents: 'auto' }}>
+                  <iframe
+                    src={`${embedUrl}${embedUrl.includes('?') ? '&' : '?'}autoplay=1`}
+                    className="w-full aspect-video max-h-full border-0 rounded-lg"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    title="Project Demo Video"
+                    style={{ pointerEvents: 'auto', WebkitTransform: 'translateZ(0)', transform: 'translateZ(0)' }}
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
+        )}
+      </>
+    );
+  }
+
   return (
     <div className="w-full h-full bg-black relative z-[100]" style={{ pointerEvents: 'auto' }}>
       <iframe
@@ -553,7 +618,7 @@ const YouTubePlayer = ({ url }: { url: string }) => {
         allowFullScreen
         title="Project Demo Video"
         loading="lazy"
-        style={{ pointerEvents: 'auto', WebkitTransform: 'translateZ(0)', transform: 'translateZ(0)' }}
+        style={{ pointerEvents: 'auto' }}
       />
     </div>
   );
@@ -623,7 +688,7 @@ const MediaTabs = ({ images, videoUrl }: { images: string[]; videoUrl: string })
               className="absolute inset-0 z-10"
               style={{ pointerEvents: 'auto' }}
             >
-              <YouTubePlayer url={videoUrl} />
+              <YouTubePlayer url={videoUrl} thumbnail={images?.[0]} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -643,7 +708,7 @@ const ProjectMedia = ({ project }: { project: Project }) => {
   if (images.length > 0 && videoUrl) {
     content = <MediaTabs images={images} videoUrl={videoUrl} />;
   } else if (videoUrl) {
-    content = <YouTubePlayer url={videoUrl} />;
+    content = <YouTubePlayer url={videoUrl} thumbnail={images?.[0]} />;
   } else if (images.length > 0) {
     content = <ImageCarousel images={images} />;
   } else {

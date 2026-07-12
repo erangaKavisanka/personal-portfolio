@@ -379,162 +379,162 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
 
   return (
     <>
-    <div
-      className="relative w-full h-full overflow-hidden bg-muted/20 group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      tabIndex={0}
-      style={{ touchAction: 'pan-y' }}
-      onKeyDown={(e) => {
-        if (e.key === "ArrowLeft") paginate(-1);
-        if (e.key === "ArrowRight") paginate(1);
-        if (e.key === "Escape" && isFullscreen) setIsFullscreen(false);
-      }}
-    >
-      <AnimatePresence initial={false} custom={direction}>
-        <motion.img
-          key={currentIndex}
-          src={images[currentIndex]}
-          alt={`Screenshot ${currentIndex + 1}`}
-          custom={direction}
-          draggable={false}
-          variants={{
-            enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-            center: { zIndex: 1, x: 0, opacity: 1 },
-            exit: (dir: number) => ({ zIndex: 0, x: dir < 0 ? '100%' : '-100%', opacity: 0 })
-          }}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={1}
-          onDragEnd={(e, { offset, velocity }) => {
-            const swipe = swipePower(offset.x, velocity.x);
-            if (swipe < -swipeConfidenceThreshold) paginate(1);
-            else if (swipe > swipeConfidenceThreshold) paginate(-1);
-          }}
-          className="absolute inset-0 w-full h-full object-cover select-none"
-        />
-      </AnimatePresence>
+      <div
+        className="relative w-full h-full overflow-hidden bg-muted/20 group"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        tabIndex={0}
+        style={{ touchAction: 'pan-y' }}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft") paginate(-1);
+          if (e.key === "ArrowRight") paginate(1);
+          if (e.key === "Escape" && isFullscreen) setIsFullscreen(false);
+        }}
+      >
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.img
+            key={currentIndex}
+            src={images[currentIndex]}
+            alt={`Screenshot ${currentIndex + 1}`}
+            custom={direction}
+            draggable={false}
+            variants={{
+              enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+              center: { zIndex: 1, x: 0, opacity: 1 },
+              exit: (dir: number) => ({ zIndex: 0, x: dir < 0 ? '100%' : '-100%', opacity: 0 })
+            }}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(e, { offset, velocity }) => {
+              const swipe = swipePower(offset.x, velocity.x);
+              if (swipe < -swipeConfidenceThreshold) paginate(1);
+              else if (swipe > swipeConfidenceThreshold) paginate(-1);
+            }}
+            className="absolute inset-0 w-full h-full object-cover select-none"
+          />
+        </AnimatePresence>
 
-      {images.length > 1 && (
-        <>
-          <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
-            <Button
-              variant="secondary"
-              size="icon"
-              className="w-10 h-10 rounded-full bg-background/80 backdrop-blur-md border border-border/50 shadow-lg pointer-events-auto hover:scale-110 transition-transform text-foreground"
-              onClick={(e) => { e.stopPropagation(); paginate(-1); }}
-              aria-label="Previous image"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="secondary"
-              size="icon"
-              className="w-10 h-10 rounded-full bg-background/80 backdrop-blur-md border border-border/50 shadow-lg pointer-events-auto hover:scale-110 transition-transform text-foreground"
-              onClick={(e) => { e.stopPropagation(); paginate(1); }}
-              aria-label="Next image"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </Button>
-          </div>
-
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
-            {images.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setDirection(idx > currentIndex ? 1 : -1);
-                  setCurrentIndex(idx);
-                }}
-                aria-label={`Go to image ${idx + 1}`}
-                className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex
-                  ? "w-8 bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
-                  : "w-2 bg-white/50 hover:bg-white/80"
-                  }`}
+        {images.length > 1 && (
+          <>
+            <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+              <Button
+                variant="secondary"
+                size="icon"
+                className="w-10 h-10 rounded-full bg-background/80 backdrop-blur-md border border-border/50 shadow-lg pointer-events-auto hover:scale-110 transition-transform text-foreground"
+                onClick={(e) => { e.stopPropagation(); paginate(-1); }}
+                aria-label="Previous image"
               >
-                <span className="sr-only">Image {idx + 1}</span>
-              </button>
-            ))}
-          </div>
-        </>
-      )}
+                <ChevronLeft className="w-5 h-5" />
+              </Button>
+              <Button
+                variant="secondary"
+                size="icon"
+                className="w-10 h-10 rounded-full bg-background/80 backdrop-blur-md border border-border/50 shadow-lg pointer-events-auto hover:scale-110 transition-transform text-foreground"
+                onClick={(e) => { e.stopPropagation(); paginate(1); }}
+                aria-label="Next image"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </Button>
+            </div>
 
-      {/* Expand Button */}
-      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none">
-        <Button
-          variant="secondary"
-          size="icon"
-          className="w-8 h-8 rounded-full bg-background/80 backdrop-blur-md border border-border/50 shadow-lg pointer-events-auto hover:scale-110 transition-transform text-foreground"
-          onClick={(e) => { e.stopPropagation(); setIsFullscreen(true); }}
-          aria-label="View full image"
-        >
-          <Maximize2 className="w-4 h-4" />
-        </Button>
-      </div>
-    </div>
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
+              {images.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDirection(idx > currentIndex ? 1 : -1);
+                    setCurrentIndex(idx);
+                  }}
+                  aria-label={`Go to image ${idx + 1}`}
+                  className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex
+                    ? "w-8 bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                    : "w-2 bg-white/50 hover:bg-white/80"
+                    }`}
+                >
+                  <span className="sr-only">Image {idx + 1}</span>
+                </button>
+              ))}
+            </div>
+          </>
+        )}
 
-    {/* Fullscreen Modal via Portal */}
-    {typeof document !== "undefined" && createPortal(
-      <AnimatePresence>
-        {isFullscreen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/95 p-4"
-            onClick={(e) => { e.stopPropagation(); setIsFullscreen(false); }}
+        {/* Expand Button */}
+        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none">
+          <Button
+            variant="secondary"
+            size="icon"
+            className="w-8 h-8 rounded-full bg-background/80 backdrop-blur-md border border-border/50 shadow-lg pointer-events-auto hover:scale-110 transition-transform text-foreground"
+            onClick={(e) => { e.stopPropagation(); setIsFullscreen(true); }}
+            aria-label="View full image"
           >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-4 right-4 z-[100000] rounded-full hover:bg-white/20 text-white/70 hover:text-white"
+            <Maximize2 className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Fullscreen Modal via Portal */}
+      {typeof document !== "undefined" && createPortal(
+        <AnimatePresence>
+          {isFullscreen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/95 p-4"
               onClick={(e) => { e.stopPropagation(); setIsFullscreen(false); }}
             >
-              <X className="w-6 h-6" />
-            </Button>
-            
-            <motion.img
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              src={images[currentIndex]}
-              alt="Fullscreen view"
-              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[100000]"
-              onClick={(e) => e.stopPropagation()}
-              draggable={false}
-            />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-4 right-4 z-[100000] rounded-full hover:bg-white/20 text-white/70 hover:text-white"
+                onClick={(e) => { e.stopPropagation(); setIsFullscreen(false); }}
+              >
+                <X className="w-6 h-6" />
+              </Button>
 
-            {images.length > 1 && (
-              <>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-[100000] rounded-full hover:bg-white/20 text-white/70 hover:text-white"
-                  onClick={(e) => { e.stopPropagation(); paginate(-1); }}
-                >
-                  <ChevronLeft className="w-8 h-8" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-[100000] rounded-full hover:bg-white/20 text-white/70 hover:text-white"
-                  onClick={(e) => { e.stopPropagation(); paginate(1); }}
-                >
-                  <ChevronRight className="w-8 h-8" />
-                </Button>
-              </>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>,
-      document.body
-    )}
+              <motion.img
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                src={images[currentIndex]}
+                alt="Fullscreen view"
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[100000]"
+                onClick={(e) => e.stopPropagation()}
+                draggable={false}
+              />
+
+              {images.length > 1 && (
+                <>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-[100000] rounded-full hover:bg-white/20 text-white/70 hover:text-white"
+                    onClick={(e) => { e.stopPropagation(); paginate(-1); }}
+                  >
+                    <ChevronLeft className="w-8 h-8" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-[100000] rounded-full hover:bg-white/20 text-white/70 hover:text-white"
+                    onClick={(e) => { e.stopPropagation(); paginate(1); }}
+                  >
+                    <ChevronRight className="w-8 h-8" />
+                  </Button>
+                </>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 };
@@ -557,7 +557,7 @@ const YouTubePlayer = ({ url, thumbnail }: { url: string, thumbnail?: string }) 
   if (isMobile) {
     return (
       <>
-        <div 
+        <div
           className="relative w-full h-full bg-muted/20 flex items-center justify-center cursor-pointer group"
           style={{ pointerEvents: 'auto' }}
           onClick={(e) => {
@@ -746,7 +746,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       </div>
       <div className="w-full flex flex-col flex-1 p-6 space-y-6 relative z-10">
         <div>
-          <h3 className="text-xl lg:text-2xl font-bold tracking-tight mb-3 group-hover:text-primary transition-colors duration-300">
+          <h3 className="text-xl font-bold leading-tight mb-3 group-hover:text-primary transition-colors duration-300">
             {project.title}
           </h3>
           <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
@@ -828,8 +828,7 @@ export const ProjectsSection = () => {
             Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyan-400">Projects</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            A collection of projects showcasing AI/ML research, backend development,
-            mobile apps, and full-stack applications.
+            A curated collection of production-grade cloud, DevOps, Kubernetes, and Site Reliability Engineering projects focused on automation, scalability, and cloud-native infrastructure.
           </p>
         </motion.div>
 

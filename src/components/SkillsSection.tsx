@@ -2,21 +2,20 @@ import { motion } from "framer-motion";
 
 import {
   SiDocker,
-  SiMongodb,
-  SiMysql,
-  SiGithub,
   SiGithubactions,
-  SiJavascript,
-  SiTypescript,
   SiLinux,
   SiJenkins,
-  SiApachemaven,
-  SiPostman,
   SiGit,
   SiKubernetes,
   SiTerraform,
   SiNginx,
   SiPython,
+  SiArgo,
+  SiSonarqube,
+  SiHelm,
+  SiAnsible,
+  SiPrometheus,
+  SiGrafana,
 } from "react-icons/si";
 
 import { FaJava, FaAws } from "react-icons/fa";
@@ -36,70 +35,20 @@ const skills = [
   { name: "Docker", icon: SiDocker, color: "from-blue-500 to-cyan-500" },
   { name: "Kubernetes", icon: SiKubernetes, color: "from-blue-600 to-blue-400" },
   { name: "Terraform", icon: SiTerraform, color: "from-purple-600 to-indigo-500" },
-
-  { name: "ArgoCD", icon: Workflow, color: "from-blue-500 to-cyan-500" },
+  { name: "Argo CD", icon: SiArgo, color: "from-blue-500 to-cyan-500" },
   { name: "GitOps", icon: SiGit, color: "from-orange-500 to-red-500" },
-
   { name: "Linux", icon: SiLinux, color: "from-yellow-600 to-yellow-400" },
-
   { name: "GitHub Actions", icon: SiGithubactions, color: "from-blue-600 to-blue-400" },
-
   { name: "Jenkins", icon: SiJenkins, color: "from-red-600 to-red-400" },
-
-  { name: "SonarQube", icon: ShieldCheck, color: "from-blue-500 to-cyan-500" },
-
-  { name: "Helm", icon: Boxes, color: "from-indigo-500 to-blue-500" },
-
-  { name: "Ansible", icon: Server, color: "from-red-500 to-pink-500" },
-
-  { name: "Nginx", icon: SiNginx, color: "from-green-600 to-green-400" },
-
-  { name: "Prometheus", icon: Activity, color: "from-orange-500 to-yellow-500" },
-
-  { name: "Grafana", icon: BarChart3, color: "from-orange-500 to-red-500" },
-
-  { name: "AWS EKS", icon: SiKubernetes, color: "from-blue-600 to-blue-400" },
-
-  { name: "Java", icon: FaJava, color: "from-red-500 to-orange-500" },
-
+  { name: "SonarQube", icon: SiSonarqube, color: "from-blue-500 to-cyan-500" },
+  { name: "Helm", icon: SiHelm, color: "from-indigo-500 to-blue-500" },
+  { name: "Ansible", icon: SiAnsible, color: "from-red-500 to-pink-500" },
+  { name: "NGINX", icon: SiNginx, color: "from-green-600 to-green-400" },
+  { name: "Prometheus", icon: SiPrometheus, color: "from-orange-500 to-yellow-500" },
+  { name: "Grafana", icon: SiGrafana, color: "from-orange-500 to-red-500" },
   { name: "Python", icon: SiPython, color: "from-yellow-500 to-blue-500" },
-];
-const cloudSkills = [
-  "AWS",
-  "GCP",
-  "Multi-Cloud",
-  "EC2",
-  "S3",
-  "IAM",
-  "VPC",
-  "Load Balancer",
-  "Route 53",
-  "Cloud Architecture",
-];
-
-const devopsSkills = [
-  "Docker",
-  "Kubernetes",
-  "Helm",
-  "ArgoCD",
-  "GitOps",
-  "Terraform",
-  "Ansible",
-  "Jenkins",
-  "GitHub Actions",
-  "CI/CD",
-];
-
-const sreSkills = [
-  "Linux",
-  "Bash Scripting",
-  "Nginx",
-  "Prometheus",
-  "Grafana",
-  "Monitoring",
-  "Observability",
-  "Reliability Engineering",
-  "Incident Management",
+  { name: "Java", icon: FaJava, color: "from-red-500 to-orange-500" },
+  { name: "Git", icon: SiGit, color: "from-orange-500 to-red-500" },
 ];
 
 const programmingSkills = [
@@ -107,20 +56,88 @@ const programmingSkills = [
   "Python",
   "JavaScript",
   "TypeScript",
+  "Bash",
   "SQL",
+  "Dart (Flutter)",
+];
+
+const cloudSkills = [
+  "Amazon Web Services (AWS)",
+  "Google Cloud Platform (GCP)",
+  "Amazon EC2",
+  "Amazon ECS",
+  "Amazon EKS",
+  "Amazon ECR",
+  "AWS Lambda",
+  "Amazon S3",
+  "IAM",
+  "VPC",
+  "Route 53",
+  "Application Load Balancer",
+  "CloudWatch",
+  "SNS",
+  "Elastic Beanstalk",
+  "AWS IoT Core",
+];
+
+const devopsSkills = [
+  "Docker",
+  "Docker Compose",
+  "Kubernetes",
+  "Helm",
+  "Argo CD",
+  "GitOps",
+  "Terraform",
+  "Ansible",
+  "Jenkins",
+  "GitHub Actions",
+  "GitLab CI/CD",
+  "AWS CodePipeline",
+  "AWS CodeBuild",
+  "CI/CD",
+  "DevSecOps",
+];
+
+const sreSkills = [
+  "Linux",
+  "Bash Scripting",
+  "NGINX",
+  "Prometheus",
+  "Grafana",
+  "Loki",
+  "Alloy",
+  "CloudWatch",
+  "Monitoring",
+  "Observability",
+  "Logging",
+  "Alerting",
+  "Incident Response",
+  "Reliability Engineering",
 ];
 
 const researchSkills = [
   "Software Engineering Research",
   "Technical Writing",
-  "Academic Publishing",
+  "Research Publication",
   "IoT Systems",
-  "RF Communication",
-  "Research Methodology",
+  "RF Mesh Communication",
+  "MQTT",
+  "Edge Computing",
+  "Cloud-Integrated IoT",
 ];
 
-
-const tools = [ "Git", "GitHub", "VS Code", "IntelliJ IDEA", "Postman", "Maven", ];
+const tools = [
+  "Git",
+  "GitHub",
+  "GitLab",
+  "VS Code",
+  "IntelliJ IDEA",
+  "Postman",
+  "Maven",
+  "SonarQube",
+  "Trivy",
+  "n8n",
+];
 
 
 export const SkillsSection = () => {

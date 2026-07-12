@@ -16,9 +16,9 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Github, url: "https://github.com", label: "GitHub" },
-  { icon: Linkedin, url: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Twitter, url: "https://twitter.com", label: "Twitter" },
+  { icon: Github, url: "https://github.com/erangaKavisanka", label: "GitHub" },
+  { icon: Linkedin, url: "https://www.linkedin.com/in/eranga-kavisanka-7249592a8/", label: "LinkedIn" },
+  // { icon: Twitter, url: "https://twitter.com", label: "Twitter" },
 ];
 
 export const Footer = () => {

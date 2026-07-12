@@ -27,7 +27,7 @@ const experience = [
 
   {
     company: "InventX Solutions",
-    role: "Co-Founder",
+    role: "Co-Founder & Full Stack Developer",
     duration: "2024 - Present",
     achievements: [
       "Collaborating on software solutions and technical projects for real-world clients",
@@ -76,10 +76,10 @@ const education = [
 
 
 const certifications = [
+  "KCNA - Kubernetes and Cloud Native Associate",
   "AWS Certified Cloud Practitioner",
   "Aviatrix Certified Multicloud Associate",
   "AWS Solutions Architect Associate (Ongoing)",
-  "KCNA - Kubernetes and Cloud Native Associate (Ongoing)",
   "Advanced DevOps Master Course - Imran Teli",
   "Full Stack Web Development - Skyrek",
 ];
@@ -139,7 +139,7 @@ export const ResumeSection = () => {
                   className="relative pl-6 border-l-2 border-primary/30 hover:border-primary transition-colors group"
                 >
                   <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-card border-2 border-primary group-hover:bg-primary transition-colors" />
-                  
+
                   <div className="mb-2">
                     <span className="text-sm text-primary font-medium">{job.duration}</span>
                   </div>
@@ -185,7 +185,7 @@ export const ResumeSection = () => {
                     className="relative pl-6 border-l-2 border-accent/30 hover:border-accent transition-colors group"
                   >
                     <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-card border-2 border-accent group-hover:bg-accent transition-colors" />
-                    
+
                     <div className="mb-2">
                       <span className="text-sm text-accent font-medium">{edu.year}</span>
                     </div>

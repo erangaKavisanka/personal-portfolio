@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 const socialLinks = [
-  { icon: FaGithub, url: "https://github.com", label: "GitHub" },
-  { icon: FaLinkedin, url: "https://linkedin.com", label: "LinkedIn" },
-  { icon: FaTwitter, url: "https://twitter.com", label: "Twitter" },
+  { icon: FaGithub, url: "https://github.com/erangaKavisanka", label: "GitHub" },
+  { icon: FaLinkedin, url: "https://www.linkedin.com/in/eranga-kavisanka-7249592a8/", label: "LinkedIn" },
+  // { icon: FaTwitter, url: "https://twitter.com", label: "Twitter" },
 ];
 
 export const SocialSidebar = () => {

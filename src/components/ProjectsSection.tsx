@@ -1,63 +1,37 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { ChevronDown, ChevronUp, ExternalLink, Github } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, Github, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/components/ui/carousel";
-import placeholderImage from "@/assets/project-1.jpg";
 
-type Project = {
+export type Project = {
   title: string;
   description: string;
   summary?: string;
   details?: string[];
   features?: string[];
   technologies?: string[];
-
   image: string;
-
   images?: string[];
-
   tags: string[];
-
-  githubUrl: string;
-
+  githubUrl?: string;
   videoUrl?: string;
+  liveUrl?: string;
 };
 
-// Helper to extract YouTube embed URL with autoplay
+// Helper to extract YouTube embed URL without autoplay
 const getYoutubeEmbedUrl = (url?: string) => {
   if (!url) return "";
-  const regExp =
-    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   const videoId = match && match[2].length === 11 ? match[2] : null;
   if (videoId) {
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+    return `https://www.youtube.com/embed/${videoId}?rel=0`;
   }
-  return url; // fallback (if already an embed URL)
+  return url;
 };
 
 const projects: Project[] = [
-  {
+{
     title: "Production-Grade GitOps Platform on Amazon EKS",
     description:
       "Enterprise-grade GitOps platform automating infrastructure provisioning and Kubernetes deployments on AWS.",
@@ -372,57 +346,331 @@ const projects: Project[] = [
   },
 ];
 
-
-export const ProjectsSection = () => {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [activeTab, setActiveTab] = useState("demo");
-  const [showFullDetails, setShowFullDetails] = useState(false);
-  const [showAllProjects, setShowAllProjects] = useState(false);
-  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const handleOpenChange = (open: boolean) => {
-    if (!open) {
-      setSelectedProject(null);
-      setActiveTab("demo");
-      setShowFullDetails(false);
-      setCarouselApi(null);
-      setCurrentSlide(0);
-    }
-  };
+// ----------------------------------------
+// Component: ImageCarousel
+// ----------------------------------------
+const ImageCarousel = ({ images }: { images: string[] }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    if (!carouselApi) return;
+    if (isHovered || images.length <= 1) return;
+    const timer = setInterval(() => {
+      setDirection(1);
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [isHovered, images.length]);
 
-    const onSelect = () => {
-      setCurrentSlide(carouselApi.selectedScrollSnap());
-    };
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentIndex((prev) => (prev + newDirection + images.length) % images.length);
+  };
 
-    onSelect();
-    carouselApi.on("select", onSelect);
-
-    return () => {
-      carouselApi.off("select", onSelect);
-    };
-  }, [carouselApi]);
-
-  const getProjectSummary = (project: Project) =>
-    project.summary ?? project.description.split(". ")[0];
-
-  const visibleProjects = showAllProjects ? projects : projects.slice(0, 12);
-
-  const demoTabLabel =
-    selectedProject?.videoUrl && selectedProject.videoUrl.trim()
-      ? "Demo"
-      : selectedProject?.images && selectedProject.images.length > 0
-        ? "Gallery"
-        : "Demo";
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
 
   return (
-    <section id="projects" className="py-20 lg:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/10 to-background" />
+    <div 
+      className="relative w-full h-full overflow-hidden bg-muted/20 group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowLeft") paginate(-1);
+        if (e.key === "ArrowRight") paginate(1);
+      }}
+    >
+      <AnimatePresence initial={false} custom={direction}>
+         <motion.img
+           key={currentIndex}
+           src={images[currentIndex]}
+           alt={`Screenshot ${currentIndex + 1}`}
+           custom={direction}
+           variants={{
+             enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+             center: { zIndex: 1, x: 0, opacity: 1 },
+             exit: (dir: number) => ({ zIndex: 0, x: dir < 0 ? '100%' : '-100%', opacity: 0 })
+           }}
+           initial="enter"
+           animate="center"
+           exit="exit"
+           transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
+           drag="x"
+           dragConstraints={{ left: 0, right: 0 }}
+           dragElastic={1}
+           onDragEnd={(e, { offset, velocity }) => {
+             const swipe = swipePower(offset.x, velocity.x);
+             if (swipe < -swipeConfidenceThreshold) paginate(1);
+             else if (swipe > swipeConfidenceThreshold) paginate(-1);
+           }}
+           className="absolute inset-0 w-full h-full object-cover"
+           loading="lazy"
+         />
+      </AnimatePresence>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+      {images.length > 1 && (
+        <>
+          <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+            <Button
+              variant="secondary"
+              size="icon"
+              className="w-10 h-10 rounded-full bg-background/80 backdrop-blur-md border border-border/50 shadow-lg pointer-events-auto hover:scale-110 transition-transform text-foreground"
+              onClick={(e) => { e.stopPropagation(); paginate(-1); }}
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="w-10 h-10 rounded-full bg-background/80 backdrop-blur-md border border-border/50 shadow-lg pointer-events-auto hover:scale-110 transition-transform text-foreground"
+              onClick={(e) => { e.stopPropagation(); paginate(1); }}
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </Button>
+          </div>
+
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
+            {images.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDirection(idx > currentIndex ? 1 : -1);
+                  setCurrentIndex(idx);
+                }}
+                aria-label={`Go to image ${idx + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  idx === currentIndex 
+                    ? "w-8 bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]" 
+                    : "w-2 bg-white/50 hover:bg-white/80"
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+// ----------------------------------------
+// Component: YouTubePlayer
+// ----------------------------------------
+const YouTubePlayer = ({ url }: { url: string }) => {
+  const embedUrl = getYoutubeEmbedUrl(url);
+  return (
+    <div className="w-full h-full bg-black relative z-10" style={{ pointerEvents: 'auto', touchAction: 'pan-y' }}>
+      <iframe
+        src={embedUrl}
+        className="w-full h-full border-0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        title="Project Demo Video"
+        loading="lazy"
+        style={{ pointerEvents: 'auto' }}
+      />
+    </div>
+  );
+};
+
+// ----------------------------------------
+// Component: MediaTabs
+// ----------------------------------------
+const MediaTabs = ({ images, videoUrl }: { images: string[]; videoUrl: string }) => {
+  const [activeTab, setActiveTab] = useState<"images" | "video">("images");
+
+  return (
+    <div className="w-full h-full flex flex-col group/tabs relative bg-black/10">
+      <div className="absolute top-4 left-0 right-0 flex justify-center z-20 pointer-events-none">
+        <div className="flex items-center gap-2 bg-background/70 backdrop-blur-xl p-1.5 rounded-full border border-white/10 shadow-xl pointer-events-auto transition-transform duration-300">
+          <button
+            onClick={() => setActiveTab("images")}
+            className={`relative px-4 py-1.5 text-sm font-semibold rounded-full transition-colors ${
+              activeTab === "images" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {activeTab === "images" && (
+              <motion.div
+                layoutId="activeTabIndicator"
+                className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-full"
+                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              />
+            )}
+            <span className="relative z-10">Gallery</span>
+          </button>
+          <button
+            onClick={() => setActiveTab("video")}
+            className={`relative px-4 py-1.5 text-sm font-semibold rounded-full transition-colors ${
+              activeTab === "video" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {activeTab === "video" && (
+              <motion.div
+                layoutId="activeTabIndicator"
+                className="absolute inset-0 bg-primary/20 border border-primary/30 rounded-full"
+                transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+              />
+            )}
+            <span className="relative z-10 flex items-center gap-1"><Play className="w-3.5 h-3.5" /> Demo Video</span>
+          </button>
+        </div>
+      </div>
+
+      <div className="relative w-full h-full overflow-hidden">
+        <AnimatePresence mode="wait">
+          {activeTab === "images" ? (
+            <motion.div
+              key="images"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0"
+            >
+              <ImageCarousel images={images} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="video"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 z-10"
+              style={{ pointerEvents: 'auto' }}
+            >
+              <YouTubePlayer url={videoUrl} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
+
+// ----------------------------------------
+// Component: ProjectMedia
+// ----------------------------------------
+const ProjectMedia = ({ project }: { project: Project }) => {
+  const images = project.images?.length ? project.images : (project.image ? [project.image] : []);
+  const videoUrl = project.videoUrl?.trim() || "";
+
+  let content = null;
+  if (images.length > 0 && videoUrl) {
+    content = <MediaTabs images={images} videoUrl={videoUrl} />;
+  } else if (videoUrl) {
+    content = <YouTubePlayer url={videoUrl} />;
+  } else if (images.length > 0) {
+    content = <ImageCarousel images={images} />;
+  } else {
+    content = (
+      <div className="w-full h-full bg-muted/20 flex items-center justify-center text-muted-foreground">
+        No media available
+      </div>
+    );
+  }
+
+  return (
+    <div className="aspect-video w-full overflow-hidden bg-muted/10 relative z-10">
+       {content}
+    </div>
+  );
+};
+
+// ----------------------------------------
+// Component: ProjectCard
+// ----------------------------------------
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: (index % 3) * 0.1 }}
+      className="group relative flex flex-col h-full rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] transition-all duration-500"
+    >
+       {/* Background Layer (extracted to prevent backdrop-filter from breaking iframes on iOS) */}
+       <div className="absolute inset-0 bg-card/40 group-hover:bg-card/60 backdrop-blur-xl border border-white/10 transition-colors duration-500 pointer-events-none z-0" />
+       
+       <div className="w-full relative z-10">
+          <ProjectMedia project={project} />
+       </div>
+       <div className="w-full flex flex-col flex-1 p-6 space-y-6 relative z-10">
+          <div>
+            <h3 className="text-xl lg:text-2xl font-bold tracking-tight mb-3 group-hover:text-primary transition-colors duration-300">
+               {project.title}
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+               {project.description}
+            </p>
+          </div>
+          
+          <div className="space-y-3">
+             <h4 className="text-xs font-semibold uppercase tracking-widest text-primary/80">Key Features</h4>
+             <ul className="grid grid-cols-1 gap-y-1.5">
+                {project.features?.slice(0, 3).map((feature, i) => (
+                   <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground line-clamp-1">
+                      <div className="w-1 h-1 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />
+                      <span>{feature}</span>
+                   </li>
+                ))}
+             </ul>
+          </div>
+
+          <div className="flex flex-wrap gap-1.5 pt-1">
+             {project.tags.slice(0, 3).map(tag => (
+                <span key={tag} className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-primary/10 text-primary border border-primary/20 backdrop-blur-md">
+                   {tag}
+                </span>
+             ))}
+             {project.tags.length > 3 && (
+                <span className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-primary/5 text-muted-foreground border border-primary/10 backdrop-blur-md">
+                   +{project.tags.length - 3}
+                </span>
+             )}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 pt-4 mt-auto">
+             <Button variant="outline" size="sm" className="rounded-full gap-1.5 hover:scale-105 transition-transform" asChild>
+                <a href={project.githubUrl || "https://github.com/kspeiris"} target="_blank" rel="noopener noreferrer">
+                   <Github className="w-3.5 h-3.5" />
+                   <span>Source Code</span>
+                </a>
+             </Button>
+             {(project.liveUrl && project.liveUrl !== "" && project.liveUrl !== "#") && (
+                <Button size="sm" className="rounded-full gap-1.5 hover:scale-105 transition-transform shadow-md shadow-primary/20" asChild>
+                   <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>Live Demo</span>
+                   </a>
+                </Button>
+             )}
+          </div>
+       </div>
+    </motion.div>
+  );
+};
+
+// ----------------------------------------
+// Main Component: ProjectsSection
+// ----------------------------------------
+export const ProjectsSection = () => {
+  return (
+    <section id="projects" className="py-24 lg:py-40 relative overflow-hidden bg-background">
+      {/* Premium Background Effects */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
+      <div className="absolute top-[20%] -left-[10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
+      <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-cyan-400/5 blur-[120px] pointer-events-none" />
+      
+      <div className="container mx-auto px-4 lg:px-8 relative z-10 space-y-24 lg:space-y-40">
+        
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -434,7 +682,7 @@ export const ProjectsSection = () => {
             My Work
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Featured <span className="gradient-text">Projects</span>
+            Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyan-400">Projects</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             A collection of projects showcasing AI/ML research, backend development,
@@ -442,360 +690,14 @@ export const ProjectsSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {visibleProjects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: (index % 12) * 0.05 }}
-              whileHover={{ y: -10 }}
-              className="group relative"
-            >
-              <div className="relative bg-card/50 backdrop-blur-sm border border-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10">
-                <div className="relative overflow-hidden aspect-video">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-
-                  <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-background/50 backdrop-blur-sm">
-                    <Button
-                      variant="hero"
-                      size="sm"
-                      className="gap-2"
-                      onClick={() => setSelectedProject(project)}
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Live Demo
-                    </Button>
-                    <Button
-                      variant="heroOutline"
-                      size="sm"
-                      className="gap-2"
-                      onClick={() => window.open(project.githubUrl, "_blank")}
-                    >
-                      <Github className="w-4 h-4" />
-                      GitHub
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors line-clamp-1">
-                    {project.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm mb-4 line-clamp-1">
-                    {project.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full border border-primary/20"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                    {project.tags.length > 3 && (
-                      <span className="text-xs px-3 py-1 bg-secondary/50 text-muted-foreground rounded-full">
-                        +{project.tags.length - 3}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+        {/* Projects List */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((project, index) => (
+            <ProjectCard key={project.title} project={project} index={index} />
           ))}
         </div>
 
-        {projects.length > 12 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12"
-          >
-            <Button
-              variant="heroOutline"
-              size="lg"
-              onClick={() => setShowAllProjects(!showAllProjects)}
-              className="gap-2"
-            >
-              {showAllProjects ? (
-                <>
-                  Show Less
-                  <ChevronUp className="w-4 h-4" />
-                </>
-              ) : (
-                <>
-                  More Projects
-                  <ChevronDown className="w-4 h-4" />
-                </>
-              )}
-            </Button>
-
-            <Button variant="heroOutline" size="lg" asChild>
-              <a
-                href="https://github.com/kspeiris"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View All Projects
-              </a>
-            </Button>
-          </motion.div>
-        )}
       </div>
-
-      {/* Modal */}
-      <Dialog open={!!selectedProject} onOpenChange={handleOpenChange}>
-        <DialogContent className="max-w-6xl w-[95vw] max-h-[92vh] overflow-hidden p-0 bg-card/95 backdrop-blur-lg border-border">
-          {selectedProject && (
-            <div className="max-h-[92vh] overflow-y-auto">
-              <div className="relative overflow-hidden border-b border-border/70">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/15 via-transparent to-cyan-400/10" />
-                <div className="relative p-5 sm:p-6 lg:p-8">
-                  <DialogHeader className="pr-8">
-                    <DialogTitle className="text-2xl font-bold">
-                      {selectedProject.title}
-                    </DialogTitle>
-                  </DialogHeader>
-                </div>
-              </div>
-
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <div className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5">
-                  <TabsList className="relative grid w-full grid-cols-2 bg-muted/60 overflow-hidden rounded-xl p-1 h-12">
-                    <motion.div
-                      layout
-                      transition={{ type: "spring", stiffness: 520, damping: 42 }}
-                      className="absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-lg bg-background shadow-sm"
-                      style={{ x: activeTab === "demo" ? "0%" : "100%" }}
-                    />
-                    <TabsTrigger
-                      value="demo"
-                      className="relative z-10 h-10 rounded-lg data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-                    >
-                      {demoTabLabel}
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="details"
-                      className="relative z-10 h-10 rounded-lg data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-                    >
-                      Details
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
-
-                <TabsContent value="demo" className="mt-0">
-                  <div className="p-4 sm:p-6 lg:p-8">
-                    <div className="grid gap-4 sm:gap-6 lg:grid-cols-[1.6fr_1fr]">
-                      <div className="space-y-4">
-                        {selectedProject.videoUrl && selectedProject.videoUrl.trim() ? (
-                          <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/20 ring-1 ring-white/10 shadow-lg">
-                            <iframe
-                              src={getYoutubeEmbedUrl(selectedProject.videoUrl)}
-                              title={selectedProject.title}
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                              className="w-full h-full"
-                            />
-                          </div>
-                        ) : selectedProject.images && selectedProject.images.length > 0 ? (
-                          <div className="space-y-4">
-                            <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/20 ring-1 ring-white/10 shadow-lg">
-                              <Carousel
-                                setApi={setCarouselApi}
-                                className="w-full h-full"
-                              >
-                                <CarouselContent className="h-full">
-                                  {selectedProject.images.map((image, index) => (
-                                    <CarouselItem
-                                      key={`${image}-${index}`}
-                                      className="h-full"
-                                    >
-                                      <img
-                                        src={image}
-                                        alt={`${selectedProject.title} screenshot ${index + 1}`}
-                                        className="w-full h-full object-cover"
-                                      />
-                                    </CarouselItem>
-                                  ))}
-                                </CarouselContent>
-                                <CarouselPrevious className="left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full border border-border/70 bg-background/80 backdrop-blur-sm hover:bg-background" />
-                                <CarouselNext className="right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full border border-border/70 bg-background/80 backdrop-blur-sm hover:bg-background" />
-                              </Carousel>
-                            </div>
-
-                            <div className="flex items-center justify-center gap-2">
-                              {selectedProject.images.map((_, index) => (
-                                <button
-                                  key={index}
-                                  type="button"
-                                  aria-label={`Go to slide ${index + 1}`}
-                                  className={`h-2.5 w-2.5 rounded-full transition-all ${
-                                    index === currentSlide
-                                      ? "bg-primary scale-110"
-                                      : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                                  }`}
-                                  onClick={() => carouselApi?.scrollTo(index)}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/20 ring-1 ring-white/10 shadow-lg">
-                            <img
-                              src={selectedProject.image}
-                              alt={selectedProject.title}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        )}
-
-                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          {selectedProject.videoUrl && selectedProject.videoUrl.trim()
-                            ? "Watch the live demo first, then switch to the Details tab for the full project breakdown."
-                            : selectedProject.images && selectedProject.images.length > 0
-                              ? "Swipe through the project gallery, then switch to the Details tab for the full project breakdown."
-                              : "Preview the project cover image, then switch to the Details tab for the full project breakdown."}
-                        </p>
-                      </div>
-
-                      <div className="rounded-xl border border-border/70 bg-background/30 p-3 sm:p-5">
-                        <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-3">
-                          Tech Stack
-                        </h3>
-                        <div className="flex flex-wrap gap-2">
-                          {selectedProject.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full border border-primary/20"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-
-                        {selectedProject.githubUrl && selectedProject.githubUrl !== "#" && (
-                          <div className="mt-5">
-                            <Button
-                              variant="heroOutline"
-                              size="sm"
-                              className="gap-2"
-                              onClick={() => window.open(selectedProject.githubUrl, "_blank")}
-                            >
-                              <Github className="w-4 h-4" />
-                              GitHub
-                            </Button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="details" className="mt-0">
-                  <div className="p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
-                    <div className="rounded-xl border border-border/70 bg-background/30 p-3 sm:p-5">
-                      <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-3">
-                        Summary
-                      </h3>
-                      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                        {getProjectSummary(selectedProject)}
-                      </p>
-
-                      <Collapsible open={showFullDetails} onOpenChange={setShowFullDetails}>
-                        <CollapsibleContent className="mt-3 text-sm sm:text-base text-muted-foreground leading-relaxed">
-                          <div className="space-y-3">
-                            {selectedProject.details?.map((item) => (
-                              <p key={item}>{item}</p>
-                            ))}
-                            {selectedProject.features && (
-                              <div>
-                                <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2">
-                                  Key Features
-                                </h4>
-                                <ul className="grid gap-2 sm:grid-cols-2">
-                                  {selectedProject.features.map((feature) => (
-                                    <li
-                                      key={feature}
-                                      className="rounded-lg border border-border/60 bg-background/40 px-3 py-2 text-sm text-muted-foreground"
-                                    >
-                                      {feature}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                            {selectedProject.technologies && (
-                              <div>
-                                <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-2">
-                                  Technologies
-                                </h4>
-                                <p>{selectedProject.technologies.join(", ")}</p>
-                              </div>
-                            )}
-                          </div>
-                        </CollapsibleContent>
-                        <CollapsibleTrigger asChild>
-                          <Button variant="ghost" size="sm" className="mt-3 gap-2 px-0 hover:bg-transparent">
-                            {showFullDetails ? (
-                              <>
-                                Show less
-                                <ChevronUp className="w-4 h-4" />
-                              </>
-                            ) : (
-                              <>
-                                Read more
-                                <ChevronDown className="w-4 h-4" />
-                              </>
-                            )}
-                          </Button>
-                        </CollapsibleTrigger>
-                      </Collapsible>
-                    </div>
-
-                    <div className="rounded-xl border border-border/70 bg-background/30 p-3 sm:p-5">
-                      <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-3">
-                        Tech Stack
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedProject.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-xs px-3 py-1 bg-primary/10 text-primary rounded-full border border-primary/20"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {selectedProject.githubUrl && selectedProject.githubUrl !== "#" && (
-                      <Button
-                        variant="heroOutline"
-                        size="sm"
-                        className="gap-2"
-                        onClick={() => window.open(selectedProject.githubUrl, "_blank")}
-                      >
-                        <Github className="w-4 h-4" />
-                        GitHub
-                      </Button>
-                    )}
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </section>
   );
 };

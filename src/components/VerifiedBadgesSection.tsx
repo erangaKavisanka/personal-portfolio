@@ -50,7 +50,7 @@ const achievements: Achievement[] = [
     title: "Published Research Paper",
     category: "Research",
     issuer: "Jayewardenepura Computing Symposium (JCoS 2026)",
-    description: "Published undergraduate research in Artificial Intelligence and Deep Learning.",
+    description: "Published undergraduate research",
     image: "/badges/research1.jpg",
     link: "https://www.linkedin.com/posts/eranga-kavisanka-7249592a8_research-publication-jcos2026-ugcPost-7463624864038359040-MnwV/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEouAcwBLFoJr-teZm0z89rST1LN-ILosYk"
   },

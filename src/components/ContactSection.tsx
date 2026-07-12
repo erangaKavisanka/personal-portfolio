@@ -1,7 +1,13 @@
 import { useState } from "react";
+import emailjs from "@emailjs/browser";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, MapPin, Mail, Phone, Github, Linkedin, Twitter, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string;
+const NOTIFICATION_TEMPLATE = import.meta.env.VITE_EMAILJS_NOTIFICATION_TEMPLATE as string;
+const AUTOREPLY_TEMPLATE = import.meta.env.VITE_EMAILJS_AUTOREPLY_TEMPLATE as string;
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string;
 
 const contactInfo = [
   { icon: MapPin, label: "Location", value: "Sri Lanka" },
@@ -10,9 +16,9 @@ const contactInfo = [
 ];
 
 const socialLinks = [
-  { icon: Github, label: "GitHub", url: "https://github.com/Eranga035225" },
-  { icon: Linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/eranga-kavisanka-ariyarathna-7249592a8" },
-  { icon: Twitter, label: "Twitter", url: "https://twitter.com" },
+  { icon: Github, label: "GitHub", url: "https://github.com/erangaKavisanka" },
+  { icon: Linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/eranga-kavisanka-7249592a8" },
+  // { icon: Twitter, label: "Twitter", url: "https://twitter.com" },
 ];
 
 export const ContactSection = () => {
@@ -24,21 +30,70 @@ export const ContactSection = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsSubmitted(false);
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      await emailjs.send(
+        SERVICE_ID,
+        NOTIFICATION_TEMPLATE,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          reply_to: formData.email,
+          message: formData.message,
+        },
+        PUBLIC_KEY
+      );
+
+      await emailjs.send(
+        SERVICE_ID,
+        AUTOREPLY_TEMPLATE,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        PUBLIC_KEY
+      );
+
+      setIsSubmitted(true);
       setFormData({ name: "", email: "", message: "" });
-    }, 3000);
+      setTimeout(() => setIsSubmitted(false), 5000);
+    } catch (error: any) {
+      console.error("EmailJS Error:", error);
+
+      console.log("========== FULL ERROR ==========");
+      console.dir(error);
+
+      if (error instanceof Error) {
+        console.log("Message:", error.message);
+        console.log("Stack:", error.stack);
+      }
+
+      console.log("Stringified:", JSON.stringify(error, null, 2));
+
+      setSubmitError(
+        error?.text ||
+        error?.message ||
+        JSON.stringify(error) ||
+        "Unknown Error"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section id="contact" className="py-20 lg:py-32 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
-      
+
       {/* Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(var(--border))_1px,transparent_1px),linear-gradient(to_bottom,hsl(var(--border))_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
 
@@ -105,11 +160,10 @@ export const ContactSection = () => {
                     {/* Name Field */}
                     <div className="relative">
                       <motion.label
-                        className={`absolute left-4 transition-all duration-200 pointer-events-none ${
-                          focusedField === "name" || formData.name
-                            ? "text-xs text-primary -top-2 bg-card px-2"
-                            : "text-muted-foreground top-4"
-                        }`}
+                        className={`absolute left-4 transition-all duration-200 pointer-events-none ${focusedField === "name" || formData.name
+                          ? "text-xs text-primary -top-2 bg-card px-2"
+                          : "text-muted-foreground top-4"
+                          }`}
                       >
                         Your Name
                       </motion.label>
@@ -127,11 +181,10 @@ export const ContactSection = () => {
                     {/* Email Field */}
                     <div className="relative">
                       <motion.label
-                        className={`absolute left-4 transition-all duration-200 pointer-events-none ${
-                          focusedField === "email" || formData.email
-                            ? "text-xs text-primary -top-2 bg-card px-2"
-                            : "text-muted-foreground top-4"
-                        }`}
+                        className={`absolute left-4 transition-all duration-200 pointer-events-none ${focusedField === "email" || formData.email
+                          ? "text-xs text-primary -top-2 bg-card px-2"
+                          : "text-muted-foreground top-4"
+                          }`}
                       >
                         Your Email
                       </motion.label>
@@ -149,11 +202,10 @@ export const ContactSection = () => {
                     {/* Message Field */}
                     <div className="relative">
                       <motion.label
-                        className={`absolute left-4 transition-all duration-200 pointer-events-none ${
-                          focusedField === "message" || formData.message
-                            ? "text-xs text-primary -top-2 bg-card px-2"
-                            : "text-muted-foreground top-4"
-                        }`}
+                        className={`absolute left-4 transition-all duration-200 pointer-events-none ${focusedField === "message" || formData.message
+                          ? "text-xs text-primary -top-2 bg-card px-2"
+                          : "text-muted-foreground top-4"
+                          }`}
                       >
                         Your Message
                       </motion.label>
@@ -168,9 +220,18 @@ export const ContactSection = () => {
                       />
                     </div>
 
-                    <Button variant="hero" size="xl" type="submit" className="w-full gap-2">
-                      <Send className="w-5 h-5" />
-                      Send Message
+                    {submitError && (
+                      <div className="text-red-500 text-sm mb-4">
+                        {submitError}
+                      </div>
+                    )}
+                    <Button variant="hero" size="xl" type="submit" className="w-full gap-2" disabled={isSubmitting}>
+                      {isSubmitting ? (
+                        <div className="w-5 h-5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <Send className="w-5 h-5" />
+                      )}
+                      {isSubmitting ? "Sending..." : "Send Message"}
                     </Button>
                   </motion.form>
                 )}

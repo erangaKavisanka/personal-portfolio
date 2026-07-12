@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github, ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { ExternalLink, Github, ChevronLeft, ChevronRight, Play, Maximize2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export type Project = {
@@ -63,7 +64,7 @@ const projects: Project[] = [
     ],
     images: ["/projects/2.jpg"],
     tags: ["GitOps", "AWS", "Kubernetes"],
-    githubUrl: "",
+    githubUrl: "https://github.com/erangaKavisanka/aws-eks-gitops-platform.git",
     videoUrl: "",
     image: ""
   },
@@ -102,7 +103,7 @@ const projects: Project[] = [
     ],
     image: "/projects/3.png",
     tags: ["Kubernetes", "AWS", "MySQL"],
-    githubUrl: "",
+    githubUrl: "https://github.com/erangaKavisanka/vprofile-v10-production-kubernetes-deployment.git",
     videoUrl: "",
   },
 
@@ -138,7 +139,7 @@ const projects: Project[] = [
     ],
     image: "/projects/4.png",
     tags: ["SRE", "Monitoring", "AWS"],
-    githubUrl: "",
+    githubUrl: "https://github.com/erangaKavisanka/aws-observability-stack-sre-prometheus-grafana-loki-alloy.git",
     videoUrl: "https://youtu.be/2Up8fXWoMy8?si=bcp2ZOcahUV5b-mb",
   },
 
@@ -172,7 +173,7 @@ const projects: Project[] = [
     ],
     image: "/projects/5.jpg",
     tags: ["Security", "AWS", "Python"],
-    githubUrl: "",
+    githubUrl: "https://github.com/erangaKavisanka/serverless-aws-security-compliance-automation.git",
     videoUrl: "",
   },
 
@@ -206,7 +207,7 @@ const projects: Project[] = [
     ],
     image: "/projects/6.gif",
     tags: ["CI/CD", "Jenkins", "AWS"],
-    githubUrl: "",
+    githubUrl: "https://github.com/erangaKavisanka/vprofile-v5-ci-cd-pipeline-jenkins.git",
     videoUrl: "https://youtu.be/OjUblNONRMs",
   },
 
@@ -355,15 +356,16 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
-    if (isHovered || images.length <= 1) return;
+    if (images.length <= 1 || isHovered || isFullscreen) return;
     const timer = setInterval(() => {
       setDirection(1);
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [isHovered, images.length]);
+  }, [isHovered, images.length, isFullscreen]);
 
   const paginate = (newDirection: number) => {
     setDirection(newDirection);
@@ -376,14 +378,17 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
   };
 
   return (
+    <>
     <div
       className="relative w-full h-full overflow-hidden bg-muted/20 group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       tabIndex={0}
+      style={{ touchAction: 'pan-y' }}
       onKeyDown={(e) => {
         if (e.key === "ArrowLeft") paginate(-1);
         if (e.key === "ArrowRight") paginate(1);
+        if (e.key === "Escape" && isFullscreen) setIsFullscreen(false);
       }}
     >
       <AnimatePresence initial={false} custom={direction}>
@@ -392,6 +397,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
           src={images[currentIndex]}
           alt={`Screenshot ${currentIndex + 1}`}
           custom={direction}
+          draggable={false}
           variants={{
             enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
             center: { zIndex: 1, x: 0, opacity: 1 },
@@ -409,13 +415,13 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
             if (swipe < -swipeConfidenceThreshold) paginate(1);
             else if (swipe > swipeConfidenceThreshold) paginate(-1);
           }}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover select-none"
         />
       </AnimatePresence>
 
       {images.length > 1 && (
         <>
-          <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
             <Button
               variant="secondary"
               size="icon"
@@ -450,12 +456,86 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
                   ? "w-8 bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
                   : "w-2 bg-white/50 hover:bg-white/80"
                   }`}
-              />
+              >
+                <span className="sr-only">Image {idx + 1}</span>
+              </button>
             ))}
           </div>
         </>
       )}
+
+      {/* Expand Button */}
+      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none">
+        <Button
+          variant="secondary"
+          size="icon"
+          className="w-8 h-8 rounded-full bg-background/80 backdrop-blur-md border border-border/50 shadow-lg pointer-events-auto hover:scale-110 transition-transform text-foreground"
+          onClick={(e) => { e.stopPropagation(); setIsFullscreen(true); }}
+          aria-label="View full image"
+        >
+          <Maximize2 className="w-4 h-4" />
+        </Button>
+      </div>
     </div>
+
+    {/* Fullscreen Modal via Portal */}
+    {typeof document !== "undefined" && createPortal(
+      <AnimatePresence>
+        {isFullscreen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/95 p-4"
+            onClick={(e) => { e.stopPropagation(); setIsFullscreen(false); }}
+          >
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-4 right-4 z-[100000] rounded-full hover:bg-white/20 text-white/70 hover:text-white"
+              onClick={(e) => { e.stopPropagation(); setIsFullscreen(false); }}
+            >
+              <X className="w-6 h-6" />
+            </Button>
+            
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              src={images[currentIndex]}
+              alt="Fullscreen view"
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[100000]"
+              onClick={(e) => e.stopPropagation()}
+              draggable={false}
+            />
+
+            {images.length > 1 && (
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-[100000] rounded-full hover:bg-white/20 text-white/70 hover:text-white"
+                  onClick={(e) => { e.stopPropagation(); paginate(-1); }}
+                >
+                  <ChevronLeft className="w-8 h-8" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-[100000] rounded-full hover:bg-white/20 text-white/70 hover:text-white"
+                  onClick={(e) => { e.stopPropagation(); paginate(1); }}
+                >
+                  <ChevronRight className="w-8 h-8" />
+                </Button>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>,
+      document.body
+    )}
+    </>
   );
 };
 

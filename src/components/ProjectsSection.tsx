@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, ChevronUp, ExternalLink, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,10 +9,20 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 import placeholderImage from "@/assets/project-1.jpg";
-
-
 
 type Project = {
   title: string;
@@ -21,14 +31,20 @@ type Project = {
   details?: string[];
   features?: string[];
   technologies?: string[];
+
   image: string;
+
+  images?: string[];
+
   tags: string[];
+
   githubUrl: string;
-  videoUrl: string;
+
+  videoUrl?: string;
 };
 
 // Helper to extract YouTube embed URL with autoplay
-const getYoutubeEmbedUrl = (url: string) => {
+const getYoutubeEmbedUrl = (url?: string) => {
   if (!url) return "";
   const regExp =
     /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -42,118 +58,365 @@ const getYoutubeEmbedUrl = (url: string) => {
 
 const projects: Project[] = [
   {
-    title: "VProfile DevOps CI/CD Pipeline",
+    title: "Production-Grade GitOps Platform on Amazon EKS",
     description:
-      "Production-grade DevOps project implementing CI/CD automation using Jenkins, Docker, Kubernetes, GitHub Actions, and AWS.",
+      "Enterprise-grade GitOps platform automating infrastructure provisioning and Kubernetes deployments on AWS.",
     summary:
-      "A complete end-to-end DevOps pipeline that automates application build, testing, containerization, deployment, and monitoring using modern cloud-native technologies.",
+      "Provisioned Amazon EKS with Terraform and automated GitOps deployments using GitHub Actions, Helm, Argo CD, Amazon ECR, and SonarQube.",
     details: [
-      "Built automated CI/CD pipelines using Jenkins and GitHub Actions.",
-      "Containerized the application using Docker and deployed to Kubernetes.",
-      "Provisioned cloud infrastructure on AWS.",
-      "Implemented Infrastructure as Code and deployment automation.",
+      "Provisioned production-ready Amazon EKS infrastructure using Terraform.",
+      "Implemented GitHub Actions CI/CD pipelines.",
+      "Automated Helm-based Kubernetes deployments.",
+      "Configured Argo CD continuous reconciliation.",
+      "Integrated SonarQube quality gates and Amazon ECR.",
     ],
     features: [
-      "CI/CD Pipeline",
-      "Docker Containerization",
-      "Kubernetes Deployment",
+      "GitOps",
+      "Terraform",
       "GitHub Actions",
-      "Jenkins Automation",
-      "AWS Deployment",
-      "Infrastructure as Code",
-      "Production Monitoring",
+      "Argo CD",
+      "Helm",
+      "Amazon EKS",
+      "SonarQube",
     ],
     technologies: [
-      "Docker",
-      "Kubernetes",
-      "Jenkins",
+      "Amazon EKS",
+      "Terraform",
       "GitHub Actions",
-      "AWS",
-      "Linux",
-      "Bash",
-      "Git",
-      "NGINX",
-      "Terraform"
-    ],
-    image: placeholderImage,
-    tags: [
-      "DevOps",
-      "Kubernetes",
+      "Argo CD",
+      "Helm",
       "Docker",
-      "AWS",
-      "CI/CD",
-      "Jenkins",
-      "Terraform"
+      "Amazon ECR",
+      "SonarQube",
     ],
-    githubUrl: "https://github.com/yourusername/vprofile-devops",
-    videoUrl: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID",
+    image: "/projects/gitops.png",
+    tags: ["GitOps", "AWS", "Kubernetes"],
+    githubUrl: "",
+    videoUrl: "",
   },
 
   {
-    title: "Hybrid RF Off-Grid Emergency Communication System",
+    title: "Production-Style Multi-Tier Java Application on Kubernetes",
     description:
-      "Final Year Research Project enabling off-grid communication with opportunistic cloud synchronization for traveler safety.",
+      "Production-style 5-tier Java application deployed on a self-managed Kubernetes cluster running on AWS.",
     summary:
-      "An IoT-powered hybrid communication platform that enables emergency messaging over RF mesh networks and synchronizes data to the cloud whenever internet connectivity becomes available.",
+      "Built a complete cloud-native deployment using Kubernetes, kOps, NGINX Ingress, Route53, Amazon EBS CSI, MySQL, RabbitMQ, and Memcached.",
     details: [
-      "Designed an RF mesh communication network for off-grid environments.",
-      "Integrated ESP32-based IoT devices with a Flutter mobile application.",
-      "Implemented MQTT communication using AWS IoT Core.",
-      "Developed real-time dashboards with Grafana for monitoring emergency events.",
+      "Provisioned Kubernetes cluster using kOps.",
+      "Configured NGINX Ingress Controller.",
+      "Integrated Route53 DNS.",
+      "Configured Amazon EBS CSI persistent storage.",
+      "Managed MySQL, RabbitMQ, and Memcached services.",
     ],
     features: [
-      "RF Mesh Communication",
-      "Emergency SOS Alerts",
-      "Offline Messaging",
-      "AWS IoT Core Integration",
-      "MQTT Communication",
-      "Grafana Dashboard",
-      "Cloud Synchronization",
-      "Flutter Mobile App",
+      "5-Tier Architecture",
+      "Ingress",
+      "Persistent Storage",
+      "Route53",
+      "Service Discovery",
     ],
     technologies: [
-      "Flutter",
-      "ESP32",
-      "MQTT",
-      "AWS IoT Core",
-      "Grafana",
-      "MySQL",
-      "Python",
+      "Kubernetes",
+      "kOps",
       "Docker",
-      "Git"
+      "AWS EC2",
+      "NGINX",
+      "Route53",
+      "Amazon EBS CSI",
+      "RabbitMQ",
+      "MySQL",
+      "Memcached",
     ],
-    image: placeholderImage,
-    tags: [
-      "IoT",
-      "Flutter",
+    image: "/projects/vprofile-k8s.png",
+    tags: ["Kubernetes", "Docker", "AWS"],
+    githubUrl: "",
+    videoUrl: "",
+  },
+
+  {
+    title: "Production-Grade Cloud Observability Platform",
+    description:
+      "Centralized monitoring, logging, visualization, and alerting platform built on AWS.",
+    summary:
+      "Implemented Prometheus, Grafana, Loki, Alloy, PromQL dashboards, and Slack alerting across multiple AWS EC2 instances.",
+    details: [
+      "Configured Prometheus metrics collection.",
+      "Built Grafana dashboards.",
+      "Centralized logs using Loki.",
+      "Configured Alloy log shipping.",
+      "Integrated Slack alerting.",
+    ],
+    features: [
+      "Monitoring",
+      "Logging",
+      "Alerting",
+      "PromQL",
+      "Grafana",
+      "Loki",
+    ],
+    technologies: [
+      "Prometheus",
+      "Grafana",
+      "Loki",
+      "Alloy",
+      "Flask",
+      "Slack",
       "AWS",
-      "MQTT",
-      "ESP32",
-      "Research",
-      "Cloud"
     ],
-    githubUrl: "https://github.com/yourusername/hybrid-rf-network",
+    image: "/projects/observability.png",
+    tags: ["SRE", "Monitoring", "AWS"],
+    githubUrl: "",
+    videoUrl: "https://youtu.be/2Up8fXWoMy8?si=bcp2ZOcahUV5b-mb",
+  },
+
+  {
+    title: "Serverless AWS Security Compliance Automation",
+    description:
+      "Automated cloud security auditing solution built using serverless AWS services.",
+    summary:
+      "Scans AWS Security Groups across regions, generates compliance reports, stores audit logs, and delivers automated notifications.",
+    details: [
+      "Built AWS Lambda automation.",
+      "Configured EventBridge scheduled execution.",
+      "Generated compliance reports.",
+      "Stored reports in Amazon S3.",
+      "Delivered SNS email notifications.",
+    ],
+    features: [
+      "Serverless",
+      "Security Automation",
+      "Compliance",
+      "Event Driven",
+      "Multi-Region",
+    ],
+    technologies: [
+      "AWS Lambda",
+      "Python",
+      "boto3",
+      "EventBridge",
+      "SNS",
+      "Amazon S3",
+    ],
+    image: "/projects/security.png",
+    tags: ["Security", "AWS", "Python"],
+    githubUrl: "",
+    videoUrl: "",
+  },
+
+  {
+    title: "Jenkins CI/CD Pipeline for Containerized Applications",
+    description:
+      "Production-style CI/CD pipeline automating containerized application deployments to AWS.",
+    summary:
+      "Integrated Jenkins, Maven, SonarQube, Docker, Amazon ECR, and Amazon ECS into a complete deployment workflow.",
+    details: [
+      "Automated Maven builds.",
+      "Integrated SonarQube quality analysis.",
+      "Built Docker images.",
+      "Published images to Amazon ECR.",
+      "Automated deployments to Amazon ECS.",
+    ],
+    features: [
+      "CI/CD",
+      "Jenkins",
+      "Docker",
+      "Amazon ECS",
+      "Amazon ECR",
+    ],
+    technologies: [
+      "Jenkins",
+      "Docker",
+      "Amazon ECS",
+      "Amazon ECR",
+      "Maven",
+      "SonarQube",
+    ],
+    image: "/projects/jenkins.png",
+    tags: ["CI/CD", "Jenkins", "AWS"],
+    githubUrl: "",
+    videoUrl: "",
+  },
+
+  {
+    title: "Security-First DevSecOps Pipeline using GitLab CI/CD",
+    description:
+      "Multi-stage DevSecOps pipeline integrating security directly into the software delivery lifecycle.",
+    summary:
+      "Automated builds, testing, Docker image creation, Checkstyle validation, Trivy vulnerability scanning, and secure artifact publishing.",
+    details: [
+      "Implemented GitLab CI/CD pipeline.",
+      "Integrated Trivy vulnerability scanning.",
+      "Automated Docker builds.",
+      "Added Checkstyle validation.",
+      "Generated security reports.",
+    ],
+    features: [
+      "DevSecOps",
+      "GitLab CI/CD",
+      "Trivy",
+      "Docker",
+      "Shift-Left Security",
+    ],
+    technologies: [
+      "GitLab CI/CD",
+      "Docker",
+      "Trivy",
+      "Maven",
+      "Checkstyle",
+    ],
+    image: "/projects/devsecops.png",
+    tags: ["DevSecOps", "Security", "CI/CD"],
+    githubUrl: "",
+    videoUrl: "",
+  },
+
+  {
+    title: "Multi-Node Infrastructure Automation using Ansible",
+    description:
+      "Automated provisioning and configuration management across multiple AWS EC2 instances.",
+    summary:
+      "Configured agentless infrastructure automation using Ansible inventory groups, SSH, and ad-hoc commands.",
+    details: [
+      "Configured Ansible control node.",
+      "Managed multiple EC2 instances.",
+      "Automated Apache deployment.",
+      "Implemented inventory grouping.",
+      "Performed agentless configuration management.",
+    ],
+    features: [
+      "Configuration Management",
+      "Automation",
+      "Linux",
+      "SSH",
+      "Infrastructure",
+    ],
+    technologies: [
+      "Ansible",
+      "AWS EC2",
+      "Linux",
+      "SSH",
+      "Apache HTTP Server",
+    ],
+    image: "/projects/ansible.png",
+    tags: ["Ansible", "Automation", "AWS"],
+    githubUrl: "",
+    videoUrl: "",
+  },
+
+  {
+    title: "Production-Ready Amazon EKS Infrastructure using Terraform",
+    description:
+      "Provisioned production-ready Kubernetes infrastructure on AWS using Infrastructure as Code.",
+    summary:
+      "Automated Amazon EKS deployment with reusable Terraform modules, VPC networking, IAM roles, and managed node groups.",
+    details: [
+      "Provisioned Amazon EKS.",
+      "Created reusable Terraform modules.",
+      "Configured IAM roles and policies.",
+      "Automated VPC networking.",
+      "Provisioned managed node groups.",
+    ],
+    features: [
+      "Infrastructure as Code",
+      "Amazon EKS",
+      "Terraform",
+      "AWS Networking",
+      "Automation",
+    ],
+    technologies: [
+      "Terraform",
+      "Amazon EKS",
+      "IAM",
+      "VPC",
+      "Route53",
+      "CloudWatch",
+    ],
+    image: "/projects/terraform-eks.png",
+    tags: ["Terraform", "EKS", "AWS"],
+    githubUrl: "",
+    videoUrl: "",
+  },
+
+  {
+    title: "AI Agent as a Functional API with n8n",
+    description:
+      "Workflow-driven AI Agent exposed as a RESTful API using n8n, Groq, and OpenWeatherMap.",
+    summary:
+      "Built an intelligent API capable of context-aware conversations, external API integration, and workflow automation.",
+    details: [
+      "Built workflows using n8n.",
+      "Integrated Groq LLM.",
+      "Connected OpenWeatherMap API.",
+      "Exposed workflows through Webhooks.",
+      "Tested APIs using Postman.",
+    ],
+    features: [
+      "AI Agent",
+      "REST API",
+      "Workflow Automation",
+      "Memory",
+      "Webhook",
+    ],
+    technologies: [
+      "n8n",
+      "Groq",
+      "OpenWeatherMap API",
+      "Postman",
+      "Git",
+      "GitHub",
+    ],
+    image: "/projects/n8n-agent.png",
+    tags: ["AI", "Automation", "API"],
+    githubUrl: "",
     videoUrl: "",
   },
 ];
+
+
 export const ProjectsSection = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeTab, setActiveTab] = useState("demo");
   const [showFullDetails, setShowFullDetails] = useState(false);
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [carouselApi, setCarouselApi] = useState<CarouselApi | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setSelectedProject(null);
       setActiveTab("demo");
       setShowFullDetails(false);
+      setCarouselApi(null);
+      setCurrentSlide(0);
     }
   };
+
+  useEffect(() => {
+    if (!carouselApi) return;
+
+    const onSelect = () => {
+      setCurrentSlide(carouselApi.selectedScrollSnap());
+    };
+
+    onSelect();
+    carouselApi.on("select", onSelect);
+
+    return () => {
+      carouselApi.off("select", onSelect);
+    };
+  }, [carouselApi]);
 
   const getProjectSummary = (project: Project) =>
     project.summary ?? project.description.split(". ")[0];
 
   const visibleProjects = showAllProjects ? projects : projects.slice(0, 12);
+
+  const demoTabLabel =
+    selectedProject?.videoUrl && selectedProject.videoUrl.trim()
+      ? "Demo"
+      : selectedProject?.images && selectedProject.images.length > 0
+        ? "Gallery"
+        : "Demo";
 
   return (
     <section id="projects" className="py-20 lg:py-32 relative overflow-hidden">
@@ -315,10 +578,16 @@ export const ProjectsSection = () => {
                       className="absolute inset-y-1 left-1 w-[calc(50%-0.25rem)] rounded-lg bg-background shadow-sm"
                       style={{ x: activeTab === "demo" ? "0%" : "100%" }}
                     />
-                    <TabsTrigger value="demo" className="relative z-10 h-10 rounded-lg data-[state=active]:bg-transparent data-[state=active]:shadow-none">
-                      Demo
+                    <TabsTrigger
+                      value="demo"
+                      className="relative z-10 h-10 rounded-lg data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+                    >
+                      {demoTabLabel}
                     </TabsTrigger>
-                    <TabsTrigger value="details" className="relative z-10 h-10 rounded-lg data-[state=active]:bg-transparent data-[state=active]:shadow-none">
+                    <TabsTrigger
+                      value="details"
+                      className="relative z-10 h-10 rounded-lg data-[state=active]:bg-transparent data-[state=active]:shadow-none"
+                    >
                       Details
                     </TabsTrigger>
                   </TabsList>
@@ -328,17 +597,74 @@ export const ProjectsSection = () => {
                   <div className="p-4 sm:p-6 lg:p-8">
                     <div className="grid gap-4 sm:gap-6 lg:grid-cols-[1.6fr_1fr]">
                       <div className="space-y-4">
-                        <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/20 ring-1 ring-white/10 shadow-lg">
-                          <iframe
-                            src={getYoutubeEmbedUrl(selectedProject.videoUrl)}
-                            title={selectedProject.title}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            className="w-full h-full"
-                          />
-                        </div>
+                        {selectedProject.videoUrl && selectedProject.videoUrl.trim() ? (
+                          <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/20 ring-1 ring-white/10 shadow-lg">
+                            <iframe
+                              src={getYoutubeEmbedUrl(selectedProject.videoUrl)}
+                              title={selectedProject.title}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              className="w-full h-full"
+                            />
+                          </div>
+                        ) : selectedProject.images && selectedProject.images.length > 0 ? (
+                          <div className="space-y-4">
+                            <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/20 ring-1 ring-white/10 shadow-lg">
+                              <Carousel
+                                setApi={setCarouselApi}
+                                className="w-full h-full"
+                              >
+                                <CarouselContent className="h-full">
+                                  {selectedProject.images.map((image, index) => (
+                                    <CarouselItem
+                                      key={`${image}-${index}`}
+                                      className="h-full"
+                                    >
+                                      <img
+                                        src={image}
+                                        alt={`${selectedProject.title} screenshot ${index + 1}`}
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </CarouselItem>
+                                  ))}
+                                </CarouselContent>
+                                <CarouselPrevious className="left-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full border border-border/70 bg-background/80 backdrop-blur-sm hover:bg-background" />
+                                <CarouselNext className="right-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full border border-border/70 bg-background/80 backdrop-blur-sm hover:bg-background" />
+                              </Carousel>
+                            </div>
+
+                            <div className="flex items-center justify-center gap-2">
+                              {selectedProject.images.map((_, index) => (
+                                <button
+                                  key={index}
+                                  type="button"
+                                  aria-label={`Go to slide ${index + 1}`}
+                                  className={`h-2.5 w-2.5 rounded-full transition-all ${
+                                    index === currentSlide
+                                      ? "bg-primary scale-110"
+                                      : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                                  }`}
+                                  onClick={() => carouselApi?.scrollTo(index)}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="aspect-video w-full rounded-xl overflow-hidden bg-black/20 ring-1 ring-white/10 shadow-lg">
+                            <img
+                              src={selectedProject.image}
+                              alt={selectedProject.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+
                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          Watch the live demo first, then switch to the Details tab for the full project breakdown.
+                          {selectedProject.videoUrl && selectedProject.videoUrl.trim()
+                            ? "Watch the live demo first, then switch to the Details tab for the full project breakdown."
+                            : selectedProject.images && selectedProject.images.length > 0
+                              ? "Swipe through the project gallery, then switch to the Details tab for the full project breakdown."
+                              : "Preview the project cover image, then switch to the Details tab for the full project breakdown."}
                         </p>
                       </div>
 

@@ -9,6 +9,21 @@ import {
 } from "lucide-react";
 
 const services = [
+   {
+    icon: GitBranch,
+    title: "DevOps & CI/CD",
+    description:
+      "Automating software delivery through GitHub Actions, Docker, Kubernetes, Terraform, and GitOps workflows.",
+    gradient: "from-primary to-accent",
+  },
+    {
+    icon: Shield,
+    title: "Site Reliability Engineering",
+    description:
+      "Improving system reliability through monitoring, observability, automation, and incident management practices.",
+    gradient: "from-primary to-accent",
+  },
+
   {
     icon: Cloud,
     title: "Cloud Engineering",
@@ -17,13 +32,7 @@ const services = [
     gradient: "from-accent to-primary",
   },
 
-  {
-    icon: GitBranch,
-    title: "DevOps & CI/CD",
-    description:
-      "Automating software delivery through GitHub Actions, Docker, Kubernetes, Terraform, and GitOps workflows.",
-    gradient: "from-primary to-accent",
-  },
+ 
 
   {
     icon: Server,
@@ -33,13 +42,7 @@ const services = [
     gradient: "from-accent to-primary",
   },
 
-  {
-    icon: Shield,
-    title: "Site Reliability Engineering",
-    description:
-      "Improving system reliability through monitoring, observability, automation, and incident management practices.",
-    gradient: "from-primary to-accent",
-  },
+
 
   {
     icon: BookOpen,

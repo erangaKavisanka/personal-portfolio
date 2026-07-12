@@ -20,10 +20,11 @@ const roles = [
   "DevOps Engineer",
   "Cloud Engineer",
   "Site Reliability Engineer",
-  "Researcher",
+  "Kubernetes & Cloud Native Associate",
   "AWS Certified Cloud Practitioner",
-  "Kubernetes Enthusiast",
+  "Researcher",
   "Open Source Contributor",
+  "Freelancer",
 ];
 
 /* ===== Typewriter Hook ===== */
@@ -197,8 +198,7 @@ export const HeroSection = () => {
               transition={{ delay: 0.3 }}
               className="text-muted-foreground text-lg max-w-2xl mb-8"
             >
-              A passionate Software Engineering undergraduate building scalable,
-              secure, and impactful systems.
+              Building scalable cloud-native solutions with DevOps and Kubernetes.
             </motion.p>
 
             {/* Buttons */}

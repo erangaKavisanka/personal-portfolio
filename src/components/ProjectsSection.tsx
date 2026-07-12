@@ -31,12 +31,10 @@ const getYoutubeEmbedUrl = (url?: string) => {
 };
 
 const projects: Project[] = [
-{
+  {
     title: "Production-Grade GitOps Platform on Amazon EKS",
-    description:
-      "Enterprise-grade GitOps platform automating infrastructure provisioning and Kubernetes deployments on AWS.",
-    summary:
-      "Provisioned Amazon EKS with Terraform and automated GitOps deployments using GitHub Actions, Helm, Argo CD, Amazon ECR, and SonarQube.",
+    description: "Enterprise-grade GitOps platform automating infrastructure provisioning and Kubernetes deployments on AWS.",
+    summary: "Provisioned Amazon EKS with Terraform and automated GitOps deployments using GitHub Actions, Helm, Argo CD, Amazon ECR, and SonarQube.",
     details: [
       "Provisioned production-ready Amazon EKS infrastructure using Terraform.",
       "Implemented GitHub Actions CI/CD pipelines.",
@@ -63,10 +61,11 @@ const projects: Project[] = [
       "Amazon ECR",
       "SonarQube",
     ],
-    image: "/projects/gitops.png",
+    images: ["/projects/2.jpg"],
     tags: ["GitOps", "AWS", "Kubernetes"],
     githubUrl: "",
     videoUrl: "",
+    image: ""
   },
 
   {
@@ -101,8 +100,8 @@ const projects: Project[] = [
       "MySQL",
       "Memcached",
     ],
-    image: "/projects/vprofile-k8s.png",
-    tags: ["Kubernetes", "Docker", "AWS"],
+    image: "/projects/3.png",
+    tags: ["Kubernetes", "AWS", "MySQL"],
     githubUrl: "",
     videoUrl: "",
   },
@@ -137,7 +136,7 @@ const projects: Project[] = [
       "Slack",
       "AWS",
     ],
-    image: "/projects/observability.png",
+    image: "/projects/4.png",
     tags: ["SRE", "Monitoring", "AWS"],
     githubUrl: "",
     videoUrl: "https://youtu.be/2Up8fXWoMy8?si=bcp2ZOcahUV5b-mb",
@@ -171,7 +170,7 @@ const projects: Project[] = [
       "SNS",
       "Amazon S3",
     ],
-    image: "/projects/security.png",
+    image: "/projects/5.jpg",
     tags: ["Security", "AWS", "Python"],
     githubUrl: "",
     videoUrl: "",
@@ -205,10 +204,10 @@ const projects: Project[] = [
       "Maven",
       "SonarQube",
     ],
-    image: "/projects/jenkins.png",
+    image: "/projects/6.gif",
     tags: ["CI/CD", "Jenkins", "AWS"],
     githubUrl: "",
-    videoUrl: "",
+    videoUrl: "https://youtu.be/OjUblNONRMs",
   },
 
   {
@@ -238,10 +237,10 @@ const projects: Project[] = [
       "Maven",
       "Checkstyle",
     ],
-    image: "/projects/devsecops.png",
+    image: "/projects/7.png",
     tags: ["DevSecOps", "Security", "CI/CD"],
-    githubUrl: "",
-    videoUrl: "",
+    githubUrl: "https://github.com/erangaKavisanka/vprofile-v7-gitlab-DevSecOps-pipeline.git",
+    videoUrl: "https://youtu.be/Cdb1s_1jktA",
   },
 
   {
@@ -271,9 +270,9 @@ const projects: Project[] = [
       "SSH",
       "Apache HTTP Server",
     ],
-    image: "/projects/ansible.png",
+    image: "/projects/8.jpg",
     tags: ["Ansible", "Automation", "AWS"],
-    githubUrl: "",
+    githubUrl: "https://github.com/erangaKavisanka/ansible-aws-multi-node-automation.git",
     videoUrl: "",
   },
 
@@ -305,44 +304,47 @@ const projects: Project[] = [
       "Route53",
       "CloudWatch",
     ],
-    image: "/projects/terraform-eks.png",
+    image: "/projects/9.png",
     tags: ["Terraform", "EKS", "AWS"],
-    githubUrl: "",
+    githubUrl: "https://github.com/erangaKavisanka/terraform-amazon-eks-platform.git",
     videoUrl: "",
   },
 
   {
-    title: "AI Agent as a Functional API with n8n",
+    title: "Production-Grade AWS Infrastructure Provisioning Engine using Python boto3",
     description:
-      "Workflow-driven AI Agent exposed as a RESTful API using n8n, Groq, and OpenWeatherMap.",
+      "Python-based cloud deployment engine automating end-to-end AWS infrastructure provisioning using boto3 and GitHub Actions.",
     summary:
-      "Built an intelligent API capable of context-aware conversations, external API integration, and workflow automation.",
+      "Built an automated deployment system provisioning EC2 instances, Application Load Balancers, networking, and application deployment through reusable Python automation and CI/CD workflows.",
     details: [
-      "Built workflows using n8n.",
-      "Integrated Groq LLM.",
-      "Connected OpenWeatherMap API.",
-      "Exposed workflows through Webhooks.",
-      "Tested APIs using Postman.",
+      "Automated EC2 provisioning with dynamic Amazon Linux AMI selection.",
+      "Provisioned Application Load Balancer, Target Groups, and HTTP Listeners.",
+      "Implemented Security Groups with ALB-to-EC2 traffic isolation.",
+      "Configured user-data bootstrapping for zero-touch application deployment.",
+      "Integrated GitHub Actions for automated deployment and controlled infrastructure teardown.",
     ],
     features: [
-      "AI Agent",
-      "REST API",
-      "Workflow Automation",
-      "Memory",
-      "Webhook",
+      "Infrastructure Automation",
+      "Application Load Balancer",
+      "GitHub Actions",
+      "Python Automation",
+      "Zero-Touch Deployment",
+      "Tag-Based Resource Management",
     ],
     technologies: [
-      "n8n",
-      "Groq",
-      "OpenWeatherMap API",
-      "Postman",
-      "Git",
-      "GitHub",
+      "Python",
+      "boto3",
+      "AWS EC2",
+      "Application Load Balancer",
+      "GitHub Actions",
+      "IAM",
+      "Security Groups",
+      "User Data",
     ],
-    image: "/projects/n8n-agent.png",
-    tags: ["AI", "Automation", "API"],
-    githubUrl: "",
-    videoUrl: "",
+    image: "/projects/10.png",
+    tags: ["Python", "AWS", "Automation"],
+    githubUrl: "https://github.com/erangaKavisanka/production-style-aws-automation-python-boto3.git",
+    videoUrl: "https://youtu.be/nMjeNzoyyOc",
   },
 ];
 
@@ -374,7 +376,7 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
   };
 
   return (
-    <div 
+    <div
       className="relative w-full h-full overflow-hidden bg-muted/20 group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -385,31 +387,30 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
       }}
     >
       <AnimatePresence initial={false} custom={direction}>
-         <motion.img
-           key={currentIndex}
-           src={images[currentIndex]}
-           alt={`Screenshot ${currentIndex + 1}`}
-           custom={direction}
-           variants={{
-             enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-             center: { zIndex: 1, x: 0, opacity: 1 },
-             exit: (dir: number) => ({ zIndex: 0, x: dir < 0 ? '100%' : '-100%', opacity: 0 })
-           }}
-           initial="enter"
-           animate="center"
-           exit="exit"
-           transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
-           drag="x"
-           dragConstraints={{ left: 0, right: 0 }}
-           dragElastic={1}
-           onDragEnd={(e, { offset, velocity }) => {
-             const swipe = swipePower(offset.x, velocity.x);
-             if (swipe < -swipeConfidenceThreshold) paginate(1);
-             else if (swipe > swipeConfidenceThreshold) paginate(-1);
-           }}
-           className="absolute inset-0 w-full h-full object-cover"
-           loading="lazy"
-         />
+        <motion.img
+          key={currentIndex}
+          src={images[currentIndex]}
+          alt={`Screenshot ${currentIndex + 1}`}
+          custom={direction}
+          variants={{
+            enter: (dir: number) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+            center: { zIndex: 1, x: 0, opacity: 1 },
+            exit: (dir: number) => ({ zIndex: 0, x: dir < 0 ? '100%' : '-100%', opacity: 0 })
+          }}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={1}
+          onDragEnd={(e, { offset, velocity }) => {
+            const swipe = swipePower(offset.x, velocity.x);
+            if (swipe < -swipeConfidenceThreshold) paginate(1);
+            else if (swipe > swipeConfidenceThreshold) paginate(-1);
+          }}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       </AnimatePresence>
 
       {images.length > 1 && (
@@ -445,11 +446,10 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
                   setCurrentIndex(idx);
                 }}
                 aria-label={`Go to image ${idx + 1}`}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  idx === currentIndex 
-                    ? "w-8 bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]" 
-                    : "w-2 bg-white/50 hover:bg-white/80"
-                }`}
+                className={`h-2 rounded-full transition-all duration-300 ${idx === currentIndex
+                  ? "w-8 bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"
+                  : "w-2 bg-white/50 hover:bg-white/80"
+                  }`}
               />
             ))}
           </div>
@@ -465,15 +465,15 @@ const ImageCarousel = ({ images }: { images: string[] }) => {
 const YouTubePlayer = ({ url }: { url: string }) => {
   const embedUrl = getYoutubeEmbedUrl(url);
   return (
-    <div className="w-full h-full bg-black relative z-10" style={{ pointerEvents: 'auto', touchAction: 'pan-y' }}>
+    <div className="w-full h-full bg-black relative z-[100]" style={{ pointerEvents: 'auto' }}>
       <iframe
         src={embedUrl}
-        className="w-full h-full border-0"
+        className="w-full h-full border-0 relative z-[100]"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         title="Project Demo Video"
         loading="lazy"
-        style={{ pointerEvents: 'auto' }}
+        style={{ pointerEvents: 'auto', WebkitTransform: 'translateZ(0)', transform: 'translateZ(0)' }}
       />
     </div>
   );
@@ -491,9 +491,8 @@ const MediaTabs = ({ images, videoUrl }: { images: string[]; videoUrl: string })
         <div className="flex items-center gap-2 bg-background/70 backdrop-blur-xl p-1.5 rounded-full border border-white/10 shadow-xl pointer-events-auto transition-transform duration-300">
           <button
             onClick={() => setActiveTab("images")}
-            className={`relative px-4 py-1.5 text-sm font-semibold rounded-full transition-colors ${
-              activeTab === "images" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-            }`}
+            className={`relative px-4 py-1.5 text-sm font-semibold rounded-full transition-colors ${activeTab === "images" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+              }`}
           >
             {activeTab === "images" && (
               <motion.div
@@ -506,9 +505,8 @@ const MediaTabs = ({ images, videoUrl }: { images: string[]; videoUrl: string })
           </button>
           <button
             onClick={() => setActiveTab("video")}
-            className={`relative px-4 py-1.5 text-sm font-semibold rounded-full transition-colors ${
-              activeTab === "video" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-            }`}
+            className={`relative px-4 py-1.5 text-sm font-semibold rounded-full transition-colors ${activeTab === "video" ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+              }`}
           >
             {activeTab === "video" && (
               <motion.div
@@ -578,7 +576,7 @@ const ProjectMedia = ({ project }: { project: Project }) => {
 
   return (
     <div className="aspect-video w-full overflow-hidden bg-muted/10 relative z-10">
-       {content}
+      {content}
     </div>
   );
 };
@@ -595,64 +593,64 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: (index % 3) * 0.1 }}
       className="group relative flex flex-col h-full rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] transition-all duration-500"
     >
-       {/* Background Layer (extracted to prevent backdrop-filter from breaking iframes on iOS) */}
-       <div className="absolute inset-0 bg-card/40 group-hover:bg-card/60 backdrop-blur-xl border border-white/10 transition-colors duration-500 pointer-events-none z-0" />
-       
-       <div className="w-full relative z-10">
-          <ProjectMedia project={project} />
-       </div>
-       <div className="w-full flex flex-col flex-1 p-6 space-y-6 relative z-10">
-          <div>
-            <h3 className="text-xl lg:text-2xl font-bold tracking-tight mb-3 group-hover:text-primary transition-colors duration-300">
-               {project.title}
-            </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-               {project.description}
-            </p>
-          </div>
-          
-          <div className="space-y-3">
-             <h4 className="text-xs font-semibold uppercase tracking-widest text-primary/80">Key Features</h4>
-             <ul className="grid grid-cols-1 gap-y-1.5">
-                {project.features?.slice(0, 3).map((feature, i) => (
-                   <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground line-clamp-1">
-                      <div className="w-1 h-1 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />
-                      <span>{feature}</span>
-                   </li>
-                ))}
-             </ul>
-          </div>
+      {/* Background Layer (extracted to prevent backdrop-filter from breaking iframes on iOS) */}
+      <div className="absolute inset-0 bg-card/40 group-hover:bg-card/60 backdrop-blur-xl border border-white/10 transition-colors duration-500 pointer-events-none z-0" />
 
-          <div className="flex flex-wrap gap-1.5 pt-1">
-             {project.tags.slice(0, 3).map(tag => (
-                <span key={tag} className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-primary/10 text-primary border border-primary/20 backdrop-blur-md">
-                   {tag}
-                </span>
-             ))}
-             {project.tags.length > 3 && (
-                <span className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-primary/5 text-muted-foreground border border-primary/10 backdrop-blur-md">
-                   +{project.tags.length - 3}
-                </span>
-             )}
-          </div>
+      <div className="w-full relative z-10">
+        <ProjectMedia project={project} />
+      </div>
+      <div className="w-full flex flex-col flex-1 p-6 space-y-6 relative z-10">
+        <div>
+          <h3 className="text-xl lg:text-2xl font-bold tracking-tight mb-3 group-hover:text-primary transition-colors duration-300">
+            {project.title}
+          </h3>
+          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+            {project.description}
+          </p>
+        </div>
 
-          <div className="flex flex-wrap items-center gap-3 pt-4 mt-auto">
-             <Button variant="outline" size="sm" className="rounded-full gap-1.5 hover:scale-105 transition-transform" asChild>
-                <a href={project.githubUrl || "https://github.com/kspeiris"} target="_blank" rel="noopener noreferrer">
-                   <Github className="w-3.5 h-3.5" />
-                   <span>Source Code</span>
-                </a>
-             </Button>
-             {(project.liveUrl && project.liveUrl !== "" && project.liveUrl !== "#") && (
-                <Button size="sm" className="rounded-full gap-1.5 hover:scale-105 transition-transform shadow-md shadow-primary/20" asChild>
-                   <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="w-3.5 h-3.5" />
-                      <span>Live Demo</span>
-                   </a>
-                </Button>
-             )}
-          </div>
-       </div>
+        <div className="space-y-3">
+          <h4 className="text-xs font-semibold uppercase tracking-widest text-primary/80">Key Features</h4>
+          <ul className="grid grid-cols-2 gap-x-3 gap-y-2">
+            {project.features?.map((feature, i) => (
+              <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1 flex-shrink-0" />
+                <span className="leading-tight">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5 pt-1">
+          {project.tags.slice(0, 3).map(tag => (
+            <span key={tag} className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-primary/10 text-primary border border-primary/20 backdrop-blur-md">
+              {tag}
+            </span>
+          ))}
+          {project.tags.length > 3 && (
+            <span className="px-2.5 py-1 text-[10px] font-medium rounded-full bg-primary/5 text-muted-foreground border border-primary/10 backdrop-blur-md">
+              +{project.tags.length - 3}
+            </span>
+          )}
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3 pt-4 mt-auto">
+          <Button variant="outline" size="sm" className="rounded-full gap-1.5 hover:scale-105 transition-transform" asChild>
+            <a href={project.githubUrl || "https://github.com/kspeiris"} target="_blank" rel="noopener noreferrer">
+              <Github className="w-3.5 h-3.5" />
+              <span>Source Code</span>
+            </a>
+          </Button>
+          {(project.liveUrl && project.liveUrl !== "" && project.liveUrl !== "#") && (
+            <Button size="sm" className="rounded-full gap-1.5 hover:scale-105 transition-transform shadow-md shadow-primary/20" asChild>
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Live Demo</span>
+              </a>
+            </Button>
+          )}
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -667,9 +665,9 @@ export const ProjectsSection = () => {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background" />
       <div className="absolute top-[20%] -left-[10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
       <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-cyan-400/5 blur-[120px] pointer-events-none" />
-      
+
       <div className="container mx-auto px-4 lg:px-8 relative z-10 space-y-24 lg:space-y-40">
-        
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -17,7 +17,7 @@ const floatingIcons = [
 
 /* Roles for typewriter */
 const roles = [
-  "Software Engineer"
+  "Software Engineer",
   "DevOps Engineer",
   "Cloud Engineer",
   "Site Reliability Engineer",
